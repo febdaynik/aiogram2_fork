@@ -3,6 +3,7 @@ import typing
 from . import base
 from . import fields
 from .inline_query_result import InlineQueryResult
+from .inline_query_result_button import InlineQueryResultsButton
 from .location import Location
 from .user import User
 
@@ -27,6 +28,7 @@ class InlineQuery(base.TelegramObject):
                      cache_time: typing.Optional[base.Integer] = None,
                      is_personal: typing.Optional[base.Boolean] = None,
                      next_offset: typing.Optional[base.String] = None,
+                     button: typing.Optional[InlineQueryResultsButton] = None,
                      switch_pm_text: typing.Optional[base.String] = None,
                      switch_pm_parameter: typing.Optional[base.String] = None):
         """
@@ -48,6 +50,7 @@ class InlineQuery(base.TelegramObject):
             Pass an empty string if there are no more results or if you don‘t support pagination.
             Offset length can’t exceed 64 bytes.
         :type next_offset: :obj:`typing.Optional[base.String]`
+        :param button: A JSON-serialized object describing a button to be shown above inline query results
         :param switch_pm_text: If passed, clients will display a button with specified text that
             switches the user to a private chat with the bot and sends the bot a start message
             with the parameter switch_pm_parameter
@@ -63,5 +66,6 @@ class InlineQuery(base.TelegramObject):
                                                   cache_time=cache_time,
                                                   is_personal=is_personal,
                                                   next_offset=next_offset,
+                                                  button=button,
                                                   switch_pm_text=switch_pm_text,
                                                   switch_pm_parameter=switch_pm_parameter)

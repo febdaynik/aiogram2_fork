@@ -272,7 +272,8 @@ class Methods(Helper):
     GET_MY_DESCRIPTION = Item()  # getMyDescription
     SET_MY_SHORT_DESCRIPTION = Item()  # setMyShortDescription
     GET_MY_SHORT_DESCRIPTION = Item()  # getMyShortDescription
-
+    SET_MY_NAME = Item()  # setMyName
+    GET_MY_NAME = Item()  # getMyName
 
     # Updating messages
     EDIT_MESSAGE_TEXT = Item()  # editMessageText

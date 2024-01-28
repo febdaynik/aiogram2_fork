@@ -4,6 +4,7 @@ from . import base
 from . import fields
 from .callback_game import CallbackGame
 from .login_url import LoginUrl
+from .swith_inline_query_chosen_chat import SwitchInlineQueryChosenChat
 from .web_app_info import WebAppInfo
 
 
@@ -93,6 +94,7 @@ class InlineKeyboardButton(base.TelegramObject):
     callback_data: base.String = fields.Field()
     switch_inline_query: base.String = fields.Field()
     switch_inline_query_current_chat: base.String = fields.Field()
+    switch_inline_query_chosen_chat: SwitchInlineQueryChosenChat = fields.Field(base=SwitchInlineQueryChosenChat)
     callback_game: CallbackGame = fields.Field(base=CallbackGame)
     pay: base.Boolean = fields.Field()
     web_app: WebAppInfo = fields.Field(base=WebAppInfo)
@@ -103,6 +105,7 @@ class InlineKeyboardButton(base.TelegramObject):
                  callback_data: base.String = None,
                  switch_inline_query: base.String = None,
                  switch_inline_query_current_chat: base.String = None,
+                 switch_inline_query_chosen_chat: SwitchInlineQueryChosenChat = None,
                  callback_game: CallbackGame = None,
                  pay: base.Boolean = None,
                  web_app: WebAppInfo = None,
@@ -113,6 +116,7 @@ class InlineKeyboardButton(base.TelegramObject):
                                                    callback_data=callback_data,
                                                    switch_inline_query=switch_inline_query,
                                                    switch_inline_query_current_chat=switch_inline_query_current_chat,
+                                                   switch_inline_query_chosen_chat=switch_inline_query_chosen_chat,
                                                    callback_game=callback_game,
                                                    pay=pay,
                                                    web_app=web_app,

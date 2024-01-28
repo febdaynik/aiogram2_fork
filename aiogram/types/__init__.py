@@ -10,6 +10,7 @@ from .bot_command_scope import BotCommandScope, BotCommandScopeAllChatAdministra
     BotCommandScopeDefault, BotCommandScopeType
 from .bot_description import BotDescription
 from .bot_short_description import BotShortDescription
+from .bot_name import BotName
 from .callback_game import CallbackGame
 from .callback_query import CallbackQuery
 from .chat import Chat, ChatActions, ChatType
@@ -49,6 +50,7 @@ from .inline_query_result import InlineQueryResult, InlineQueryResultArticle, In
     InlineQueryResultCachedVideo, InlineQueryResultCachedVoice, InlineQueryResultContact, InlineQueryResultDocument, \
     InlineQueryResultGame, InlineQueryResultGif, InlineQueryResultLocation, InlineQueryResultMpeg4Gif, \
     InlineQueryResultPhoto, InlineQueryResultVenue, InlineQueryResultVideo, InlineQueryResultVoice
+from .inline_query_result_button import InlineQueryResultsButton
 from .input_file import InputFile
 from .input_media import InputMedia, InputMediaAnimation, InputMediaAudio, InputMediaDocument, InputMediaPhoto, \
     InputMediaVideo, MediaGroup
@@ -85,6 +87,7 @@ from .shipping_query import ShippingQuery
 from .sticker import Sticker
 from .sticker_set import StickerSet
 from .successful_payment import SuccessfulPayment
+from .swith_inline_query_chosen_chat import SwitchInlineQueryChosenChat
 from .update import AllowedUpdates, Update
 from .user import User
 from .user_profile_photos import UserProfilePhotos
@@ -106,6 +109,7 @@ from .web_app_info import WebAppInfo
 from .webhook_info import WebhookInfo
 from .write_access_allowed import WriteAccessAllowed
 
+
 __all__ = (
     'AllowedUpdates',
     'Animation',
@@ -123,6 +127,7 @@ __all__ = (
     'BotCommandScopeType',
     'BotDescription',
     'BotShortDescription',
+    'BotName',
     'CallbackGame',
     'CallbackQuery',
     'Chat',
@@ -181,6 +186,7 @@ __all__ = (
     'InlineQueryResultVenue',
     'InlineQueryResultVideo',
     'InlineQueryResultVoice',
+    'InlineQueryResultsButton',
     'InputContactMessageContent',
     'InputInvoiceMessageContent',
     'InputFile',
@@ -242,6 +248,7 @@ __all__ = (
     'Sticker',
     'StickerSet',
     'SuccessfulPayment',
+    'SwitchInlineQueryChosenChat',
     'Update',
     'User',
     'UserProfilePhotos',

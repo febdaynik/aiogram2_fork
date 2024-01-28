@@ -20,3 +20,4 @@ class ChatMemberUpdated(base.TelegramObject):
     old_chat_member: ChatMember = fields.Field(base=ChatMember)
     new_chat_member: ChatMember = fields.Field(base=ChatMember)
     invite_link: ChatInviteLink = fields.Field(base=ChatInviteLink)
+    via_chat_folder_invite_link: base.Boolean = fields.Field()

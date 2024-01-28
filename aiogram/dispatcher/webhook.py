@@ -2058,6 +2058,150 @@ class DeleteStickerFromSet(BaseResponse):
         }
 
 
+class SetStickerSetTitle(BaseResponse):
+    """
+    Use this method to set the title of a created sticker set on to webhook.
+    """
+
+    __slots__ = ('name', 'title')
+
+    method = api.Methods.SET_STICKER_SET_TITLE
+
+    def __init__(self, name: String, title: String):
+        """
+        :param name: String - Sticker set name
+        :param title: String - Sticker set title, 1-64 characters
+        """
+        self.name = name
+        self.title = title
+
+    def prepare(self):
+        return {
+            'name': self.name,
+            'title': self.title
+        }
+
+
+class SetCustomEmojiStickerSetThumbnail(BaseResponse):
+    """
+    Use this method to set the thumbnail of a custom emoji sticker set on to webhook.
+    """
+
+    __slots__ = ('name', 'custom_emoji_id')
+
+    method = api.Methods.SET_CUSTOM_EMOJI_STICKER_SET_THUMBNAIL
+
+    def __init__(self, name: String, custom_emoji_id: Optional[String] = None):
+        """
+        :param name: String - Sticker set name
+        :param title: String (Optional) - Custom emoji identifier of a sticker from the sticker set;
+            pass an empty string to drop the thumbnail and use the first sticker as the thumbnail.
+        """
+        self.name = name
+        self.custom_emoji_id = custom_emoji_id
+
+    def prepare(self):
+        return {
+            'name': self.name,
+            'custom_emoji_id': self.custom_emoji_id
+        }
+
+
+class DeleteStickerSet(BaseResponse):
+    """
+    Use this method to delete a sticker set that was created by the bot on to webhook.
+    """
+
+    __slots__ = ('name',)
+
+    method = api.Methods.DELETE_STICKER_SET
+
+    def __init__(self, name: String):
+        """
+        :param name: String - Sticker set name
+        """
+        self.name = name
+
+    def prepare(self):
+        return {
+            'name': self.name
+        }
+
+
+class SetStickerEmojiList(BaseResponse):
+    """
+    Use this method to change the list of emoji assigned to a regular or custom emoji sticker on to webhook.
+    """
+
+    __slots__ = ('sticker', 'emoji_list')
+
+    method = api.Methods.SET_STICKER_EMOJI_LIST
+
+    def __init__(self, sticker: String, emoji_list: List[String]):
+        """
+        :param sticker: String - File identifier of the sticker
+        :param emoji_list: List[String] - A JSON-serialized list of 1-20 emoji associated with the sticker
+        """
+        self.sticker = sticker
+        self.emoji_list = emoji_list
+
+    def prepare(self):
+        return {
+            'sticker': self.sticker,
+            'emoji_list': prepare_arg(self.emoji_list)
+        }
+
+
+class SetStickerKeywords(BaseResponse):
+    """
+    Use this method to change search keywords assigned to a regular or custom emoji sticker on to webhook.
+    """
+
+    __slots__ = ('sticker', 'keywords')
+
+    method = api.Methods.SET_STICKER_KEYWORDS
+
+    def __init__(self, sticker: String, keywords: Optional[List[String]] = None):
+        """
+        :param sticker: String - File identifier of the sticker
+        :param keywords: List[String] (Optional) - A JSON-serialized list of 0-20 search keywords for the sticker
+            with total length of up to 64 characters
+        """
+        self.sticker = sticker
+        self.keywords = keywords
+
+    def prepare(self):
+        return {
+            'sticker': self.sticker,
+            'keywords': prepare_arg(self.keywords)
+        }
+
+
+class setStickerMaskPosition(BaseResponse):
+    """
+    Use this method to change search keywords assigned to a regular or custom emoji sticker on to webhook.
+    """
+
+    __slots__ = ('sticker', 'mask_position')
+
+    method = api.Methods.SET_STICKER_MASK_POSITION
+
+    def __init__(self, sticker: String, mask_position: Optional[List[types.MaskPosition]] = None):
+        """
+        :param sticker: String - File identifier of the sticker
+        :param mask_position: List[String] (Optional) - A JSON-serialized list of 0-20 search keywords for the sticker
+            with total length of up to 64 characters
+        """
+        self.sticker = sticker
+        self.mask_position = mask_position
+
+    def prepare(self):
+        return {
+            'sticker': self.sticker,
+            'mask_position': prepare_arg(self.mask_position)
+        }
+
+
 class AnswerInlineQuery(BaseResponse):
     """
     Use that response type for answer inline query on to webhook.

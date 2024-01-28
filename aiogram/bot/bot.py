@@ -2983,6 +2983,41 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
         result = await self.request(api.Methods.GET_MY_COMMANDS, payload)
         return [types.BotCommand(**bot_command_data) for bot_command_data in result]
 
+    async def set_my_name(self, name: typing.Optional[base.String] = None,
+                          language_code: typing.Optional[base.String] = None) -> base.Boolean:
+        """
+        Use this method to change the bot's name.
+
+        Source: https://core.telegram.org/bots/api#setmyname
+
+        :param name: New bot name; 0-64 characters. Pass an empty string to remove the dedicated
+            name for the given language.
+        :param language_code: A two-letter ISO 639-1 language code.
+            If empty, the name will be shown to all users for whose language there is no dedicated name.
+
+        :return: Returns True on success
+        :rtype: :obj:`base.Boolean`
+        """
+        payload = generate_payload(**locals())
+
+        return await self.request(api.Methods.SET_MY_NAME, payload)
+
+    async def get_my_name(self, language_code: typing.Optional[base.String] = None) -> types.BotName:
+        """
+        Use this method to get the current bot name for the given user language.
+
+        Source: https://core.telegram.org/bots/api#getmyname
+
+        :param language_code: A two-letter ISO 639-1 language code or an empty string
+
+        :return: Returns BotName on success
+        :rtype: :obj:`types.BotName`
+        """
+        payload = generate_payload(**locals())
+
+        result = await self.request(api.Methods.GET_MY_NAME, payload)
+        return types.BotName(**result)
+
     async def set_my_description(self,
                                  description: typing.Optional[base.String] = None,
                                  language_code: typing.Optional[base.String] = None,
@@ -3884,6 +3919,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                                   cache_time: typing.Optional[base.Integer] = None,
                                   is_personal: typing.Optional[base.Boolean] = None,
                                   next_offset: typing.Optional[base.String] = None,
+                                  button: typing.Optional[types.InlineQueryResultButton] = None,
                                   switch_pm_text: typing.Optional[base.String] = None,
                                   switch_pm_parameter: typing.Optional[base.String] = None) -> base.Boolean:
         """
@@ -3907,6 +3943,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             Pass an empty string if there are no more results or if you don‘t support pagination.
             Offset length can’t exceed 64 bytes.
         :type next_offset: :obj:`typing.Optional[base.String]`
+        :param button: A JSON-serialized object describing a button to be shown above inline query results
         :param switch_pm_text: If passed, clients will display a button with specified text that
             switches the user to a private chat with the bot and sends the bot a start message
             with the parameter switch_pm_parameter
@@ -3917,6 +3954,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
         :return: On success, True is returned
         :rtype: :obj:`base.Boolean`
         """
+        button = prepare_arg(button)
         results = prepare_arg(results)
         payload = generate_payload(**locals())
 
