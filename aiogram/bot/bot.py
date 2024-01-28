@@ -1983,6 +1983,9 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                                   can_pin_messages: typing.Optional[base.Boolean] = None,
                                   can_promote_members: typing.Optional[base.Boolean] = None,
                                   can_manage_video_chats: typing.Optional[base.Boolean] = None,
+                                  can_post_stories: typing.Optional[base.Boolean] = None,
+                                  can_edit_stories: typing.Optional[base.Boolean] = None,
+                                  can_delete_stories: typing.Optional[base.Boolean] = None,
                                   can_manage_topics: typing.Optional[base.Boolean] = None,
                                   ) -> base.Boolean:
         """
@@ -2037,7 +2040,15 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
 
         :param can_manage_video_chats: Pass True, if the administrator can manage video chats
 
-        :param can_manage_topics: Pass True if the user is allowed to create, rename, close, and reopen forum topics, supergroups only
+        :param can_post_stories: Pass True if the administrator can post stories in the channel; channels only
+        
+        :param can_edit_stories: Pass True if the administrator can edit stories posted by other users; channels only
+
+        :param can_delete_stories: Pass True if the administrator can delete stories
+            posted by other users; channels only
+
+        :param can_manage_topics: Pass True if the user is allowed to create, rename, close, and reopen forum topics,
+            supergroups only
         :type can_manage_topics: :obj:`typing.Optional[base.Boolean]`
 
         :return: Returns True on success

@@ -160,6 +160,9 @@ class ChatMemberAdministrator(ChatMember):
     can_change_info: base.Boolean = fields.Field()
     can_invite_users: base.Boolean = fields.Field()
     can_pin_messages: base.Boolean = fields.Field()
+    can_post_stories: base.Boolean = fields.Field()
+    can_edit_stories: base.Boolean = fields.Field()
+    can_delete_stories: base.Boolean = fields.Field()
     can_manage_topics: base.Boolean = fields.Field()
 
 

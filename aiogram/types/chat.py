@@ -326,6 +326,9 @@ class Chat(base.TelegramObject):
                       can_pin_messages: typing.Optional[base.Boolean] = None,
                       can_promote_members: typing.Optional[base.Boolean] = None,
                       can_manage_video_chats: typing.Optional[base.Boolean] = None,
+                      can_post_stories: typing.Optional[base.Boolean] = None,
+                      can_edit_stories: typing.Optional[base.Boolean] = None,
+                      can_delete_stories: typing.Optional[base.Boolean] = None,
                       can_manage_topics: typing.Optional[base.Boolean] = None,) -> base.Boolean:
         """
         Use this method to promote or demote a user in a supergroup or a channel.
@@ -366,6 +369,10 @@ class Chat(base.TelegramObject):
             directly or indirectly (promoted by administrators that were appointed by him)
         :type can_promote_members: :obj:`typing.Optional[base.Boolean]`
 
+        :param can_post_stories: Pass True if the administrator can post stories in the channel; channels only
+        :param can_edit_stories: Pass True if the administrator can edit stories posted by other users; channels only
+        :param can_delete_stories: Pass True if the administrator can delete stories posted by other users; channels only
+
         :return: Returns True on success.
         :rtype: :obj:`base.Boolean`
         """
@@ -384,6 +391,9 @@ class Chat(base.TelegramObject):
                                                   can_manage_chat=can_manage_chat,
                                                   can_manage_voice_chats=can_manage_voice_chats,
                                                   can_manage_video_chats=can_manage_video_chats,
+                                                  can_post_stories=can_post_stories,
+                                                  can_edit_stories=can_edit_stories,
+                                                  can_delete_stories=can_delete_stories,
                                                   can_manage_topics=can_manage_topics
                                                   )
 

@@ -12,4 +12,6 @@ class WriteAccessAllowed(base.TelegramObject):
     https://core.telegram.org/bots/api#writeaccessallowed
     """
 
+    from_request: typing.Optional[base.Boolean] = fields.Field()
     web_app_name: typing.Optional[base.String] = fields.Field()
+    from_attachment_menu: typing.Optional[base.Boolean] = fields.Field()

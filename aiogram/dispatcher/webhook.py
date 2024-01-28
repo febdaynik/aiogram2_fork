@@ -1450,7 +1450,7 @@ class PromoteChatMember(BaseResponse):
 
     __slots__ = ('chat_id', 'user_id', 'can_change_info', 'can_post_messages', 'can_edit_messages',
                  'can_delete_messages', 'can_invite_users', 'can_restrict_members', 'can_pin_messages',
-                 'can_manage_topics', 'can_promote_members')
+                 'can_manage_topics', 'can_post_stories', 'can_edit_stories', 'can_delete_stories', 'can_promote_members')
 
     method = api.Methods.PROMOTE_CHAT_MEMBER
 
@@ -1464,6 +1464,9 @@ class PromoteChatMember(BaseResponse):
                  can_restrict_members: Optional[Boolean] = None,
                  can_pin_messages: Optional[Boolean] = None,
                  can_manage_topics: Optional[Boolean] = None,
+                 can_post_stories: Optional[Boolean] = None,
+                 can_edit_stories: Optional[Boolean] = None,
+                 can_delete_stories: Optional[Boolean] = None,
                  can_promote_members: Optional[Boolean] = None):
         """
         :param chat_id: Union[Integer, String] - Unique identifier for the target chat
@@ -1494,6 +1497,9 @@ class PromoteChatMember(BaseResponse):
         self.can_restrict_members = can_restrict_members
         self.can_pin_messages = can_pin_messages
         self.can_manage_topics = can_manage_topics
+        self.can_post_stories = can_post_stories
+        self.can_edit_stories = can_edit_stories
+        self.can_delete_stories = can_delete_stories
         self.can_promote_members = can_promote_members
 
     def prepare(self):
@@ -1508,6 +1514,9 @@ class PromoteChatMember(BaseResponse):
             'can_restrict_members': self.can_restrict_members,
             'can_pin_messages': self.can_pin_messages,
             'can_manage_topics': self.can_manage_topics,
+            'can_post_stories': self.can_post_stories,
+            'can_edit_stories': self.can_edit_stories,
+            'can_delete_stories': self.can_delete_stories,
             'can_promote_members': self.can_promote_members
         }
 
