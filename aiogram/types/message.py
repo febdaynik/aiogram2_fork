@@ -12,6 +12,7 @@ from .chat_shared import ChatShared
 from .contact import Contact
 from .dice import Dice
 from .document import Document
+from .external_reply_info import ExternalReplyInfo
 from .force_reply import ForceReply
 from .forum_topic_closed import ForumTopicClosed
 from .forum_topic_created import ForumTopicCreated
@@ -32,9 +33,11 @@ from .photo_size import PhotoSize
 from .poll import Poll
 from .proximity_alert_triggered import ProximityAlertTriggered
 from .reply_keyboard import ReplyKeyboardMarkup, ReplyKeyboardRemove
+from .reply_parameters import ReplyParameters
 from .sticker import Sticker
 from .story import Story
 from .successful_payment import SuccessfulPayment
+from .text_quote import TextQuote
 from .user import User
 from .user_shared import UserShared
 from .venue import Venue
@@ -77,6 +80,8 @@ class Message(base.TelegramObject):
     is_topic_message: base.Boolean = fields.Field()
     is_automatic_forward: base.Boolean = fields.Field()
     reply_to_message: Message = fields.Field(base="Message")
+    external_reply: ExternalReplyInfo = fields.Field(base=ExternalReplyInfo)
+    quote: TextQuote = fields.Field(base=TextQuote)
     via_bot: User = fields.Field(base=User)
     edit_date: datetime.datetime = fields.DateTimeField()
     has_protected_content: base.Boolean = fields.Field()
@@ -397,6 +402,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Answer to this message
@@ -434,6 +440,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
         """
@@ -446,8 +455,10 @@ class Message(base.TelegramObject):
             disable_web_page_preview=disable_web_page_preview,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -468,6 +479,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send photos.
@@ -507,6 +519,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
         """
@@ -519,8 +534,10 @@ class Message(base.TelegramObject):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -545,6 +562,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send audio files, if you want Telegram clients to display them in the music player.
@@ -600,6 +618,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
         """
@@ -616,8 +637,10 @@ class Message(base.TelegramObject):
             thumbnail=thumbnail,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -642,6 +665,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound).
@@ -699,6 +723,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
         """
@@ -715,8 +742,10 @@ class Message(base.TelegramObject):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -739,6 +768,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send general files. On success, the sent Message is
@@ -791,6 +821,9 @@ class Message(base.TelegramObject):
         :param reply: True if the message is a reply
         :type reply: :obj:`typing.Optional[base.Boolean]`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
         """
@@ -805,8 +838,10 @@ class Message(base.TelegramObject):
             disable_content_type_detection=disable_content_type_detection,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -832,6 +867,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send video files, Telegram clients support mp4 videos
@@ -889,6 +925,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
         """
@@ -906,8 +945,10 @@ class Message(base.TelegramObject):
             supports_streaming=supports_streaming,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -929,6 +970,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send audio files, if you want Telegram clients to display the file
@@ -975,6 +1017,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
         """
@@ -988,8 +1033,10 @@ class Message(base.TelegramObject):
             duration=duration,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -1010,6 +1057,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long.
@@ -1049,6 +1097,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
         """
@@ -1061,8 +1112,10 @@ class Message(base.TelegramObject):
             thumbnail=thumbnail,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -1073,6 +1126,7 @@ class Message(base.TelegramObject):
             protect_content: typing.Optional[base.Boolean] = None,
             allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> typing.List[Message]:
         """
         Use this method to send a group of photos, videos, documents or audios as
@@ -1100,6 +1154,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, an array of the sent Messages is returned.
         :rtype: typing.List[types.Message]
         """
@@ -1109,8 +1166,10 @@ class Message(base.TelegramObject):
             media=media,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
         )
 
     async def answer_location(
@@ -1132,6 +1191,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send point on the map.
@@ -1179,6 +1239,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
         """
@@ -1193,8 +1256,10 @@ class Message(base.TelegramObject):
             proximity_alert_radius=proximity_alert_radius,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -1219,6 +1284,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send information about a venue.
@@ -1272,6 +1338,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
         """
@@ -1288,8 +1357,10 @@ class Message(base.TelegramObject):
             google_place_type=google_place_type,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -1309,6 +1380,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send phone contacts.
@@ -1343,6 +1415,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
         """
@@ -1354,8 +1429,10 @@ class Message(base.TelegramObject):
             last_name=last_name,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -1373,6 +1450,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send .webp stickers.
@@ -1401,6 +1479,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
         """
@@ -1410,8 +1491,10 @@ class Message(base.TelegramObject):
             sticker=sticker,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -1440,6 +1523,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send a native poll. On success, the sent Message is
@@ -1515,6 +1599,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
         """
@@ -1535,8 +1622,10 @@ class Message(base.TelegramObject):
             is_closed=is_closed,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -1554,6 +1643,7 @@ class Message(base.TelegramObject):
                 None,
             ] = None,
             reply: base.Boolean = False,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send an animated emoji that will display a random value.
@@ -1589,6 +1679,9 @@ class Message(base.TelegramObject):
         :param reply: fill 'reply_to_message_id'
         :type reply: :obj:`base.Boolean`
 
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
+
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
         """
@@ -1598,8 +1691,10 @@ class Message(base.TelegramObject):
             emoji=emoji,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id if reply else None,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -1645,7 +1740,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Reply to this message
@@ -1680,8 +1775,8 @@ class Message(base.TelegramObject):
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -1695,8 +1790,10 @@ class Message(base.TelegramObject):
             disable_web_page_preview=disable_web_page_preview,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -1716,7 +1813,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send photos.
@@ -1753,8 +1850,8 @@ class Message(base.TelegramObject):
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -1768,8 +1865,10 @@ class Message(base.TelegramObject):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -1793,7 +1892,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send audio files, if you want Telegram clients to display them in the music player.
@@ -1846,8 +1945,8 @@ class Message(base.TelegramObject):
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -1865,8 +1964,10 @@ class Message(base.TelegramObject):
             thumbnail=thumbnail,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -1890,7 +1991,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound).
@@ -1945,8 +2046,8 @@ class Message(base.TelegramObject):
         :type reply_markup: :obj:`typing.Union[typing.Union[types.InlineKeyboardMarkup, types.ReplyKeyboardMarkup,
             types.ReplyKeyboardRemove, types.ForceReply], None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -1964,8 +2065,10 @@ class Message(base.TelegramObject):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -1987,7 +2090,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send general files. On success, the sent Message is
@@ -2037,8 +2140,8 @@ class Message(base.TelegramObject):
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply],
             None]`
 
-        :param reply: True if the message is a reply
-        :type reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -2054,8 +2157,10 @@ class Message(base.TelegramObject):
             disable_content_type_detection=disable_content_type_detection,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -2080,7 +2185,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send video files, Telegram clients support mp4 videos
@@ -2135,8 +2240,8 @@ class Message(base.TelegramObject):
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -2155,8 +2260,10 @@ class Message(base.TelegramObject):
             supports_streaming=supports_streaming,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -2177,7 +2284,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send audio files, if you want Telegram clients to display the file
@@ -2221,8 +2328,8 @@ class Message(base.TelegramObject):
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -2237,8 +2344,10 @@ class Message(base.TelegramObject):
             duration=duration,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -2258,7 +2367,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long.
@@ -2295,9 +2404,8 @@ class Message(base.TelegramObject):
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]
             `
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
-
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
         """
@@ -2310,8 +2418,10 @@ class Message(base.TelegramObject):
             thumbnail=thumbnail,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -2321,7 +2431,7 @@ class Message(base.TelegramObject):
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
             allow_sending_without_reply: typing.Optional[base.Boolean] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> typing.List[Message]:
         """
         Use this method to send a group of photos, videos, documents or audios as
@@ -2346,8 +2456,8 @@ class Message(base.TelegramObject):
             even if the specified replied-to message is not found
         :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, an array of the sent Messages is returned.
         :rtype: typing.List[types.Message]
@@ -2358,8 +2468,10 @@ class Message(base.TelegramObject):
             media=media,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
         )
 
     async def reply_location(
@@ -2379,7 +2491,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send point on the map.
@@ -2420,8 +2532,7 @@ class Message(base.TelegramObject):
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -2437,7 +2548,7 @@ class Message(base.TelegramObject):
             proximity_alert_radius=proximity_alert_radius,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -2461,7 +2572,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send information about a venue.
@@ -2512,8 +2623,8 @@ class Message(base.TelegramObject):
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply,
             None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -2531,8 +2642,10 @@ class Message(base.TelegramObject):
             google_place_type=google_place_type,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -2551,7 +2664,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send phone contacts.
@@ -2583,8 +2696,8 @@ class Message(base.TelegramObject):
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -2597,8 +2710,10 @@ class Message(base.TelegramObject):
             last_name=last_name,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -2626,7 +2741,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send a native poll. On success, the sent Message is
@@ -2699,8 +2814,8 @@ class Message(base.TelegramObject):
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply,
             None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -2722,8 +2837,10 @@ class Message(base.TelegramObject):
             is_closed=is_closed,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -2740,7 +2857,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send .webp stickers.
@@ -2766,8 +2883,8 @@ class Message(base.TelegramObject):
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -2778,8 +2895,10 @@ class Message(base.TelegramObject):
             sticker=sticker,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -2796,7 +2915,7 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = True,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
         Use this method to send an animated emoji that will display a random value.
@@ -2829,8 +2948,8 @@ class Message(base.TelegramObject):
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply,
             None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
+        :param reply_parameters: Description of the message to reply to.
+            Do not specify together with allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -2841,8 +2960,10 @@ class Message(base.TelegramObject):
             emoji=emoji,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=self.message_id if reply else None,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters or ReplyParameters(
+                message_id=self.message_id,
+                allow_sending_without_reply=allow_sending_without_reply,
+            ),
             reply_markup=reply_markup,
         )
 
@@ -3146,8 +3267,7 @@ class Message(base.TelegramObject):
             disable_notification: typing.Optional[bool] = None,
             protect_content: typing.Optional[base.Boolean] = None,
             disable_web_page_preview: typing.Optional[bool] = None,
-            reply_to_message_id: typing.Optional[int] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup, ReplyKeyboardMarkup, None
             ] = None,
@@ -3160,20 +3280,18 @@ class Message(base.TelegramObject):
         :param disable_notification:
         :param protect_content:
         :param disable_web_page_preview: for text messages only
-        :param reply_to_message_id:
-        :param allow_sending_without_reply:
+        :param reply_parameters:
         :param reply_markup:
         :return:
         """
         kwargs = {
             "chat_id": chat_id,
             "message_thread_id": message_thread_id,
-            "allow_sending_without_reply": allow_sending_without_reply,
             "reply_markup": reply_markup or self.reply_markup,
             "parse_mode": ParseMode.HTML,
             "disable_notification": disable_notification,
             "protect_content": protect_content,
-            "reply_to_message_id": reply_to_message_id,
+            "reply_parameters": reply_parameters,
         }
         text = self.html_text if (self.text or self.caption) else None
 
@@ -3271,8 +3389,7 @@ class Message(base.TelegramObject):
             message_thread_id: typing.Optional[base.Integer] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            reply_to_message_id: typing.Optional[base.Integer] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+            reply_parameters: typing.Optional[ReplyParameters] = None,
             reply_markup: typing.Union[InlineKeyboardMarkup,
             ReplyKeyboardMarkup,
             ReplyKeyboardRemove,
@@ -3288,8 +3405,7 @@ class Message(base.TelegramObject):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_to_message_id=reply_to_message_id,
-            allow_sending_without_reply=allow_sending_without_reply,
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup
         )
 

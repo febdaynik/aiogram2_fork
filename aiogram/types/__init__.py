@@ -31,6 +31,7 @@ from .dice import Dice, DiceEmoji
 from .document import Document
 from .encrypted_credentials import EncryptedCredentials
 from .encrypted_passport_element import EncryptedPassportElement
+from .external_reply_info import ExternalReplyInfo
 from .file import File
 from .force_reply import ForceReply
 from .forum_topic import ForumTopic
@@ -84,6 +85,7 @@ from .reply_keyboard import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRe
 from .response_parameters import ResponseParameters
 from .reaction_type import ReactionType, ReactionTypeEmoji, ReactionTypeCustomEmoji
 from .reaction_count import ReactionCount
+from .reply_parameters import ReplyParameters
 from .sent_web_app_message import SentWebAppMessage
 from .shipping_address import ShippingAddress
 from .shipping_option import ShippingOption
@@ -93,6 +95,7 @@ from .sticker_set import StickerSet
 from .story import Story
 from .successful_payment import SuccessfulPayment
 from .swith_inline_query_chosen_chat import SwitchInlineQueryChosenChat
+from .text_quote import TextQuote
 from .update import AllowedUpdates, Update
 from .user import User
 from .user_profile_photos import UserProfilePhotos
@@ -162,6 +165,7 @@ __all__ = (
     'Document',
     'EncryptedCredentials',
     'EncryptedPassportElement',
+    'ExternalReplyInfo',
     'File',
     'ForceReply',
     'ForumTopic',
@@ -252,6 +256,7 @@ __all__ = (
     'ReactionTypeEmoji',
     'ReactionTypeCustomEmoji',
     'ReactionCount',
+    'ReplyParameters',
     'SentWebAppMessage',
     'ShippingAddress',
     'ShippingOption',
@@ -261,6 +266,7 @@ __all__ = (
     'Story',
     'SuccessfulPayment',
     'SwitchInlineQueryChosenChat',
+    'TextQuote',
     'Update',
     'User',
     'UserProfilePhotos',

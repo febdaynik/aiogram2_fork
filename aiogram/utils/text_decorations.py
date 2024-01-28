@@ -229,7 +229,7 @@ class MarkdownDecoration(TextDecoration):
         return self.link(value=value, link=f"tg://emoji?id={custom_emoji_id}")
 
     def blockquote(self, value: str) -> str:
-        pass
+        return f'<blockquote>{value}</blockquote>'
 
 
 html_decoration = HtmlDecoration()

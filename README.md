@@ -10,7 +10,7 @@
 
 ## Facts about the aiogram 2.0
  - The aiogram version 2.25.1 was used as a basis
- - There is support for a stable version of the Telegram Bot API (6.9)
+ - There is support for a stable version of the Telegram Bot API (7.0)
 
 
 ## Examples

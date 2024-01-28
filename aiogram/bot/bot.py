@@ -277,8 +277,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                            message_thread_id: typing.Optional[base.Integer] = None,
                            disable_notification: typing.Optional[base.Boolean] = None,
                            protect_content: typing.Optional[base.Boolean] = None,
-                           reply_to_message_id: typing.Optional[base.Integer] = None,
-                           allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                           reply_parameters: typing.Optional[types.ReplyParameters] = None,
                            reply_markup: typing.Union[types.InlineKeyboardMarkup,
                            types.ReplyKeyboardMarkup,
                            types.ReplyKeyboardRemove,
@@ -317,12 +316,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters: Description of the message to reply to
 
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
@@ -404,8 +398,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                            message_thread_id: typing.Optional[base.Integer] = None,
                            disable_notification: typing.Optional[base.Boolean] = None,
                            protect_content: typing.Optional[base.Boolean] = None,
-                           reply_to_message_id: typing.Optional[base.Integer] = None,
-                           allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                           reply_parameters: typing.Optional[types.ReplyParameters] = None,
                            reply_markup: typing.Union[types.InlineKeyboardMarkup,
                            types.ReplyKeyboardMarkup,
                            types.ReplyKeyboardRemove,
@@ -454,13 +447,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original
-            message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters: Description of the message to reply to
 
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
@@ -492,8 +479,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                          message_thread_id: typing.Optional[base.Integer] = None,
                          disable_notification: typing.Optional[base.Boolean] = None,
                          protect_content: typing.Optional[base.Boolean] = None,
-                         reply_to_message_id: typing.Optional[base.Integer] = None,
-                         allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                         reply_parameters: typing.Optional[types.ReplyParameters] = None,
                          reply_markup: typing.Union[types.InlineKeyboardMarkup,
                          types.ReplyKeyboardMarkup,
                          types.ReplyKeyboardRemove,
@@ -533,12 +519,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
@@ -578,8 +559,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                          message_thread_id: typing.Optional[base.Integer] = None,
                          disable_notification: typing.Optional[base.Boolean] = None,
                          protect_content: typing.Optional[base.Boolean] = None,
-                         reply_to_message_id: typing.Optional[base.Integer] = None,
-                         allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                         reply_parameters: typing.Optional[types.ReplyParameters] = None,
                          reply_markup: typing.Union[types.InlineKeyboardMarkup,
                          types.ReplyKeyboardMarkup,
                          types.ReplyKeyboardRemove,
@@ -633,12 +613,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
@@ -674,8 +649,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                             message_thread_id: typing.Optional[base.Integer] = None,
                             disable_notification: typing.Optional[base.Boolean] = None,
                             protect_content: typing.Optional[base.Boolean] = None,
-                            reply_to_message_id: typing.Optional[base.Integer] = None,
-                            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                            reply_parameters: typing.Optional[types.ReplyParameters] = None,
                             reply_markup: typing.Union[types.InlineKeyboardMarkup,
                             types.ReplyKeyboardMarkup,
                             types.ReplyKeyboardRemove,
@@ -728,13 +702,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original
-            message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
@@ -774,8 +742,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                          message_thread_id: typing.Optional[base.Integer] = None,
                          disable_notification: typing.Optional[base.Boolean] = None,
                          protect_content: typing.Optional[base.Boolean] = None,
-                         reply_to_message_id: typing.Optional[base.Integer] = None,
-                         allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                         reply_parameters: typing.Optional[types.ReplyParameters] = None,
                          reply_markup: typing.Union[types.InlineKeyboardMarkup,
                          types.ReplyKeyboardMarkup,
                          types.ReplyKeyboardRemove,
@@ -831,12 +798,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
@@ -877,8 +839,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                              message_thread_id: typing.Optional[base.Integer] = None,
                              disable_notification: typing.Optional[base.Boolean] = None,
                              protect_content: typing.Optional[base.Boolean] = None,
-                             reply_to_message_id: typing.Optional[base.Integer] = None,
-                             allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                             reply_parameters: typing.Optional[types.ReplyParameters] = None,
                              reply_markup: typing.Union[typing.Union[types.InlineKeyboardMarkup,
                              types.ReplyKeyboardMarkup,
                              types.ReplyKeyboardRemove,
@@ -937,12 +898,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
@@ -980,8 +936,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                          message_thread_id: typing.Optional[base.Integer] = None,
                          disable_notification: typing.Optional[base.Boolean] = None,
                          protect_content: typing.Optional[base.Boolean] = None,
-                         reply_to_message_id: typing.Optional[base.Integer] = None,
-                         allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                         reply_parameters: typing.Optional[types.ReplyParameters] = None,
                          reply_markup: typing.Union[types.InlineKeyboardMarkup,
                          types.ReplyKeyboardMarkup,
                          types.ReplyKeyboardRemove,
@@ -1027,12 +982,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
@@ -1064,8 +1014,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                               message_thread_id: typing.Optional[base.Integer] = None,
                               disable_notification: typing.Optional[base.Boolean] = None,
                               protect_content: typing.Optional[base.Boolean] = None,
-                              reply_to_message_id: typing.Optional[base.Integer] = None,
-                              allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                              reply_parameters: typing.Optional[types.ReplyParameters] = None,
                               reply_markup: typing.Union[types.InlineKeyboardMarkup,
                               types.ReplyKeyboardMarkup,
                               types.ReplyKeyboardRemove,
@@ -1103,12 +1052,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
@@ -1135,8 +1079,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                                message_thread_id: typing.Optional[base.Integer] = None,
                                disable_notification: typing.Optional[base.Boolean] = None,
                                protect_content: typing.Optional[base.Boolean] = None,
-                               reply_to_message_id: typing.Optional[base.Integer] = None,
-                               allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                               reply_parameters: typing.Optional[types.ReplyParameters] = None,
                                ) -> typing.List[types.Message]:
         """
         Use this method to send a group of photos, videos, documents or audios as
@@ -1166,13 +1109,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the messages are a reply, ID of the original
-            message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :return: On success, an array of the sent Messages is returned
         :rtype: typing.List[types.Message]
@@ -1205,8 +1142,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                             message_thread_id: typing.Optional[base.Integer] = None,
                             disable_notification: typing.Optional[base.Boolean] = None,
                             protect_content: typing.Optional[base.Boolean] = None,
-                            reply_to_message_id: typing.Optional[base.Integer] = None,
-                            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                            reply_parameters: typing.Optional[types.ReplyParameters] = None,
                             reply_markup: typing.Union[types.InlineKeyboardMarkup,
                             types.ReplyKeyboardMarkup,
                             types.ReplyKeyboardRemove,
@@ -1253,12 +1189,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
@@ -1382,8 +1313,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                          message_thread_id: typing.Optional[base.Integer] = None,
                          disable_notification: typing.Optional[base.Boolean] = None,
                          protect_content: typing.Optional[base.Boolean] = None,
-                         reply_to_message_id: typing.Optional[base.Integer] = None,
-                         allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                         reply_parameters: typing.Optional[types.ReplyParameters] = None,
                          reply_markup: typing.Union[types.InlineKeyboardMarkup,
                          types.ReplyKeyboardMarkup,
                          types.ReplyKeyboardRemove,
@@ -1435,13 +1365,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original
-            message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
@@ -1468,8 +1392,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                            message_thread_id: typing.Optional[base.Integer] = None,
                            disable_notification: typing.Optional[base.Boolean] = None,
                            protect_content: typing.Optional[base.Boolean] = None,
-                           reply_to_message_id: typing.Optional[base.Integer] = None,
-                           allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                           reply_parameters: typing.Optional[types.ReplyParameters] = None,
                            reply_markup: typing.Union[types.InlineKeyboardMarkup,
                            types.ReplyKeyboardMarkup,
                            types.ReplyKeyboardRemove,
@@ -1506,12 +1429,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
@@ -1550,8 +1468,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                         message_thread_id: typing.Optional[base.Integer] = None,
                         disable_notification: typing.Optional[base.Boolean] = None,
                         protect_content: typing.Optional[base.Boolean] = None,
-                        reply_to_message_id: typing.Optional[base.Integer] = None,
-                        allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                        reply_parameters: typing.Optional[types.ReplyParameters] = None,
                         reply_markup: typing.Union[types.InlineKeyboardMarkup,
                         types.ReplyKeyboardMarkup,
                         types.ReplyKeyboardRemove,
@@ -1625,13 +1542,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original
-            message
-        :type reply_to_message_id: :obj:`typing.Optional[Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
@@ -1662,8 +1573,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                         disable_notification: typing.Optional[base.Boolean] = None,
                         protect_content: typing.Optional[base.Boolean] = None,
                         emoji: typing.Optional[base.String] = None,
-                        reply_to_message_id: typing.Optional[base.Integer] = None,
-                        allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                        reply_parameters: typing.Optional[types.ReplyParameters] = None,
                         reply_markup: typing.Union[types.InlineKeyboardMarkup,
                         types.ReplyKeyboardMarkup,
                         types.ReplyKeyboardRemove,
@@ -1697,12 +1607,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
@@ -3492,8 +3397,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                            message_thread_id: typing.Optional[base.Integer] = None,
                            disable_notification: typing.Optional[base.Boolean] = None,
                            protect_content: typing.Optional[base.Boolean] = None,
-                           reply_to_message_id: typing.Optional[base.Integer] = None,
-                           allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                           reply_parameters: typing.Optional[types.ReplyParameters] = None,
                            reply_markup: typing.Union[types.InlineKeyboardMarkup,
                            types.ReplyKeyboardMarkup,
                            types.ReplyKeyboardRemove,
@@ -3524,12 +3428,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
@@ -4064,8 +3963,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                            message_thread_id: typing.Optional[base.Integer] = None,
                            disable_notification: typing.Optional[base.Boolean] = None,
                            protect_content: typing.Optional[base.Boolean] = None,
-                           reply_to_message_id: typing.Optional[base.Integer] = None,
-                           allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                           reply_parameters: typing.Optional[types.ReplyParameters] = None,
                            reply_markup: typing.Optional[types.InlineKeyboardMarkup] = None,
                            ) -> types.Message:
         """
@@ -4171,12 +4069,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: A JSON-serialized object for an inline keyboard
             If empty, one 'Pay total price' button will be shown. If not empty, the first button must be a Pay button.
@@ -4357,8 +4250,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                         game_short_name: base.String,
                         disable_notification: typing.Optional[base.Boolean] = None,
                         protect_content: typing.Optional[base.Boolean] = None,
-                        reply_to_message_id: typing.Optional[base.Integer] = None,
-                        allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                        reply_parameters: typing.Optional[types.ReplyParameters] = None,
                         reply_markup: typing.Optional[types.InlineKeyboardMarkup] = None,
                         ) -> types.Message:
         """
@@ -4380,12 +4272,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param reply_to_message_id: If the message is a reply, ID of the original message
-        :type reply_to_message_id: :obj:`typing.Optional[base.Integer]`
-
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
+        :param reply_parameters:
 
         :param reply_markup: A JSON-serialized object for an inline keyboard
             If empty, one ‘Play game_title’ button will be shown. If not empty, the first button must launch the game.
