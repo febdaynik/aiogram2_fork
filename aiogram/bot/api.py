@@ -259,6 +259,7 @@ class Methods(Helper):
     REOPEN_FORUM_TOPIC = Item()  # reopenForumTopic
     DELETE_FORUM_TOPIC = Item()  # deleteForumTopic
     UNPIN_ALL_FORUM_TOPIC_MESSAGES = Item()  # unpinAllForumTopicMessages
+    UNPIN_ALL_GENERAL_FORUM_TOPIC_MESSAGES = Item()  # unpinAllGeneralForumTopicMessages
     EDIT_GENERAL_FORUM_TOPIC = Item()  # editGeneralForumTopic
     CLOSE_GENERAL_FORUM_TOPIC = Item()  # closeGeneralForumTopic
     REOPEN_GENERAL_FORUM_TOPIC = Item()  # reopenGeneralForumTopic

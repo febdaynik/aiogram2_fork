@@ -86,6 +86,7 @@ from .shipping_option import ShippingOption
 from .shipping_query import ShippingQuery
 from .sticker import Sticker
 from .sticker_set import StickerSet
+from .story import Story
 from .successful_payment import SuccessfulPayment
 from .swith_inline_query_chosen_chat import SwitchInlineQueryChosenChat
 from .update import AllowedUpdates, Update
@@ -247,6 +248,7 @@ __all__ = (
     'ShippingQuery',
     'Sticker',
     'StickerSet',
+    'Story',
     'SuccessfulPayment',
     'SwitchInlineQueryChosenChat',
     'Update',

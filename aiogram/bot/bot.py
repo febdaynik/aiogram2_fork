@@ -2855,6 +2855,22 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
         payload = generate_payload(**locals())
         return await self.request(api.Methods.UNPIN_ALL_FORUM_TOPIC_MESSAGES, payload)
 
+    async def unpin_all_general_forum_topic_messages(self,  chat_id: typing.Union[int, str]) -> base.Boolean:
+        """
+        Use this method to clear the list of pinned messages in a General forum topic.
+        The bot must be an administrator in the chat for this to work and must have the
+        can_pin_messages administrator right in the supergroup.
+
+        Returns True on success.
+
+        Source: https://core.telegram.org/bots/api#unpinallgeneralforumtopicmessages
+
+        :param chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
+        :return: Returns True on success.
+        """
+        payload = generate_payload(**locals())
+        return await self.request(api.Methods.UNPIN_ALL_GENERAL_FORUM_TOPIC_MESSAGES, payload)
+
     async def answer_callback_query(self, callback_query_id: base.String,
                                     text: typing.Optional[base.String] = None,
                                     show_alert: typing.Optional[base.Boolean] = None,

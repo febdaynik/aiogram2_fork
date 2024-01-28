@@ -32,6 +32,7 @@ class Chat(base.TelegramObject):
     photo: ChatPhoto = fields.Field(base=ChatPhoto)
     active_usernames: typing.List[base.String] = fields.Field()
     emoji_status_custom_emoji_id: base.String = fields.Field()
+    emoji_status_expiration_date: base.Integer = fields.Field()
     bio: base.String = fields.Field()
     has_private_forwards: base.Boolean = fields.Field()
     has_restricted_voice_and_video_messages: base.Boolean = fields.Field()

@@ -33,6 +33,7 @@ from .poll import Poll
 from .proximity_alert_triggered import ProximityAlertTriggered
 from .reply_keyboard import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from .sticker import Sticker
+from .story import Story
 from .successful_payment import SuccessfulPayment
 from .user import User
 from .user_shared import UserShared
@@ -91,6 +92,7 @@ class Message(base.TelegramObject):
     game: Game = fields.Field(base=Game)
     photo: typing.List[PhotoSize] = fields.ListField(base=PhotoSize)
     sticker: Sticker = fields.Field(base=Sticker)
+    story: Story = fields.Field(base=Story)
     video: Video = fields.Field(base=Video)
     voice: Voice = fields.Field(base=Voice)
     video_note: VideoNote = fields.Field(base=VideoNote)

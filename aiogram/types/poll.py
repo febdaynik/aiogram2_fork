@@ -2,6 +2,7 @@ import datetime
 import typing
 
 from . import base, fields
+from .chat import Chat
 from .message_entity import MessageEntity
 from .user import User
 from ..utils import helper
@@ -27,6 +28,7 @@ class PollAnswer(base.TelegramObject):
     """
 
     poll_id: base.String = fields.Field()
+    voter_chat: Chat = fields.Field(base=Chat)
     user: User = fields.Field(base=User)
     option_ids: typing.List[base.Integer] = fields.ListField()
 
