@@ -11,6 +11,8 @@ from .poll import Poll, PollAnswer
 from .pre_checkout_query import PreCheckoutQuery
 from .shipping_query import ShippingQuery
 from .chat_join_request import ChatJoinRequest
+from .message_reaction import MessageReactionUpdated
+from .message_reaction_count import MessageReactionCountUpdated
 from ..utils import helper
 
 
@@ -36,6 +38,8 @@ class Update(base.TelegramObject):
     my_chat_member: ChatMemberUpdated = fields.Field(base=ChatMemberUpdated)
     chat_member: ChatMemberUpdated = fields.Field(base=ChatMemberUpdated)
     chat_join_request: ChatJoinRequest = fields.Field(base=ChatJoinRequest)
+    message_reaction: MessageReactionUpdated = fields.Field(base=MessageReactionUpdated)
+    message_reaction_count: MessageReactionCountUpdated = fields.Field(base=MessageReactionCountUpdated)
 
     def __hash__(self):
         return self.update_id
@@ -69,6 +73,8 @@ class AllowedUpdates(helper.Helper):
     MY_CHAT_MEMBER = helper.ListItem()  # my_chat_member
     CHAT_MEMBER = helper.ListItem()  # chat_member
     CHAT_JOIN_REQUEST = helper.ListItem()  # chat_join_request
+    MESSAGE_REACTION = helper.ListItem()  # message_reaction
+    MESSAGE_REACTION_COUNT = helper.ListItem()  # message_reaction_count
 
     @classmethod
     def default(cls):

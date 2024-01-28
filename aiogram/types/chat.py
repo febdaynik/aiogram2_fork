@@ -11,6 +11,7 @@ from .chat_member import ChatMember, ChatMemberAdministrator, ChatMemberOwner
 from .chat_permissions import ChatPermissions
 from .chat_photo import ChatPhoto
 from .input_file import InputFile
+from .reaction_type import ReactionType
 from ..utils import helper, markdown
 from ..utils.deprecated import deprecated, DeprecatedReadOnlyClassVar, removed_argument
 
@@ -51,6 +52,7 @@ class Chat(base.TelegramObject):
     location: ChatLocation = fields.Field()
     has_hidden_members: base.Boolean = fields.Field()
     has_aggressive_anti_spam_enabled: base.Boolean = fields.Field()
+    available_reactions: typing.List[ReactionType] = fields.Field(base=ReactionType)
 
     def __hash__(self):
         return self.id

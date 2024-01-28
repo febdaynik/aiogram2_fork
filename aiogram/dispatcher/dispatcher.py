@@ -79,6 +79,8 @@ class Dispatcher(DataMixin, ContextInstanceMixin):
         self.my_chat_member_handlers = Handler(self, middleware_key='my_chat_member')
         self.chat_member_handlers = Handler(self, middleware_key='chat_member')
         self.chat_join_request_handlers = Handler(self, middleware_key='chat_join_request')
+        self.message_reaction_handlers = Handler(self, middleware_key='message_reaction')
+        self.message_reaction_count_handlers = Handler(self, middleware_key='message_reaction_count')
         self.errors_handlers = Handler(self, once=False, middleware_key='error')
 
         self.middleware = MiddlewareManager(self)
@@ -247,7 +249,6 @@ class Dispatcher(DataMixin, ContextInstanceMixin):
         :return:
         """
         types.Update.set_current(update)
-
         try:
             if update.message:
                 types.Message.set_current(update.message)
@@ -309,6 +310,18 @@ class Dispatcher(DataMixin, ContextInstanceMixin):
                 types.Chat.set_current(update.chat_join_request.chat)
                 types.User.set_current(update.chat_join_request.from_user)
                 return await self.chat_join_request_handlers.notify(update.chat_join_request)
+            if update.message_reaction:
+                types.MessageReactionUpdated.set_current(update.message_reaction)
+                types.Chat.set_current(update.message_reaction.chat)
+                if update.message_reaction.actor_chat:
+                    types.Chat.set_current(update.message_reaction.actor_chat)
+                else:
+                    types.User.set_current(update.message_reaction.from_user)
+                return await self.message_reaction_handlers.notify(update.message_reaction)
+            if update.message_reaction_count:
+                types.MessageReactionCountUpdated.set_current(update.message_reaction_count)
+                types.Chat.set_current(update.message_reaction_count.chat)
+                return await self.message_reaction_count_handlers.notify(update.message_reaction_count)
         except Exception as e:
             err = await self.errors_handlers.notify(update, e)
             if err:
@@ -1191,6 +1204,118 @@ class Dispatcher(DataMixin, ContextInstanceMixin):
 
         def decorator(callback):
             self.register_chat_join_request_handler(
+                callback,
+                *custom_filters,
+                run_task=run_task,
+                **kwargs,
+            )
+            return callback
+
+        return decorator
+
+    def register_message_reaction_handler(self,
+                                          callback: typing.Callable,
+                                          *custom_filters,
+                                          run_task: typing.Optional[bool] = None,
+                                          **kwargs) -> None:
+        """
+        Register handler for message_reaction
+
+        Example:
+
+        .. code-block:: python3
+
+            dp.register_message_reaction(some_message_reaction_handler)
+
+        :param callback:
+        :param custom_filters:
+        :param run_task: run callback in task (no wait results)
+        :param kwargs:
+        """
+        filters_set = self.filters_factory.resolve(
+            self.message_reaction_handlers,
+            *custom_filters,
+            **kwargs,
+        )
+        self.message_reaction_handlers.register(
+            handler=self._wrap_async_task(callback, run_task),
+            filters=filters_set,
+        )
+
+    def message_reaction_handler(self, *custom_filters, run_task=None, **kwargs):
+        """
+        Decorator for message_reaction handler
+
+        Example:
+
+        .. code-block:: python3
+
+            @dp.message_reaction()
+            async def some_handler(update_reaction: types.MessageReactionUpdated)
+
+        :param custom_filters:
+        :param run_task: run callback in task (no wait results)
+        :param kwargs:
+        """
+
+        def decorator(callback):
+            self.register_message_reaction_handler(
+                callback,
+                *custom_filters,
+                run_task=run_task,
+                **kwargs,
+            )
+            return callback
+
+        return decorator
+
+    def register_message_reaction_count_handler(self,
+                                                callback: typing.Callable,
+                                                *custom_filters,
+                                                run_task: typing.Optional[bool] = None,
+                                                **kwargs) -> None:
+        """
+        Register handler for message_reaction_count
+
+        Example:
+
+        .. code-block:: python3
+
+            dp.register_message_reaction_count(some_message_reaction_count_handler)
+
+        :param callback:
+        :param custom_filters:
+        :param run_task: run callback in task (no wait results)
+        :param kwargs:
+        """
+        filters_set = self.filters_factory.resolve(
+            self.message_reaction_count_handlers,
+            *custom_filters,
+            **kwargs,
+        )
+        self.message_reaction_count_handlers.register(
+            handler=self._wrap_async_task(callback, run_task),
+            filters=filters_set,
+        )
+
+    def message_reaction_count_handler(self, *custom_filters, run_task=None, **kwargs):
+        """
+        Decorator for message_reaction_count handler
+
+        Example:
+
+        .. code-block:: python3
+
+            @dp.message_reaction_count()
+            async def some_handler(update_reaction_count: types.MessageReactionCountUpdated)
+
+        :param custom_filters:
+        :param run_task: run callback in task (no wait results)
+        :param kwargs:
+        """
+
+        def decorator(callback):
+            self.register_message_reaction_count_handler(
                 callback,
                 *custom_filters,
                 run_task=run_task,

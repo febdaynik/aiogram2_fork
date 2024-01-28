@@ -1786,6 +1786,33 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
         result = await self.request(api.Methods.GET_USER_PROFILE_PHOTOS, payload)
         return types.UserProfilePhotos(**result)
 
+    async def set_message_reaction(self, chat_id: typing.Union[base.Integer, base.String], message_id: base.Integer,
+                                   reaction: typing.Optional[typing.List[types.ReactionType]] = None,
+                                   is_big: typing.Optional[base.Boolean] = None) -> base.Boolean:
+        """
+        Use this method to change the chosen reactions on a message. Service messages can't be reacted to.
+        Automatically forwarded messages from a channel to its discussion group have the same
+        available reactions as messages in the channel.
+
+        Returns True on success.
+
+        Source: https://core.telegram.org/bots/api#setmessagereaction
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel
+            (in the format @channelusername)
+        :param message_id: Identifier of the target message. If the message belongs to a media group,
+            the reaction is set to the first non-deleted message in the group instead.
+        :param reaction: 	New list of reaction types to set on the message. Currently, as non-premium users,
+            bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already
+            present on the message or explicitly allowed by chat administrators.
+        :param is_big: Pass True to set the reaction with a big animation
+        :return:
+        """
+        reaction = prepare_arg(reaction)
+        payload = generate_payload(**locals())
+
+        return await self.request(api.Methods.SET_MESSAGE_REACTION, payload)
+
     async def get_file(self, file_id: base.String) -> types.File:
         """
         Use this method to get basic info about a file and prepare it for downloading.

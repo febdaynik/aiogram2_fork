@@ -67,6 +67,8 @@ from .message import ContentType, ContentTypes, Message, ParseMode
 from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
 from .message_entity import MessageEntity, MessageEntityType
 from .message_id import MessageId
+from .message_reaction import MessageReactionUpdated
+from .message_reaction_count import MessageReactionCountUpdated
 from .order_info import OrderInfo
 from .passport_data import PassportData
 from .passport_element_error import PassportElementError, PassportElementErrorDataField, PassportElementErrorFile, \
@@ -80,6 +82,8 @@ from .proximity_alert_triggered import ProximityAlertTriggered
 from .reply_keyboard import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButtonPollType, \
     KeyboardButtonRequestChat, KeyboardButtonRequestUser
 from .response_parameters import ResponseParameters
+from .reaction_type import ReactionType, ReactionTypeEmoji, ReactionTypeCustomEmoji
+from .reaction_count import ReactionCount
 from .sent_web_app_message import SentWebAppMessage
 from .shipping_address import ShippingAddress
 from .shipping_option import ShippingOption
@@ -221,6 +225,8 @@ __all__ = (
     'MessageEntity',
     'MessageEntityType',
     'MessageId',
+    'MessageReactionUpdated',
+    'MessageReactionCountUpdated',
     'OrderInfo',
     'ParseMode',
     'PassportData',
@@ -242,6 +248,10 @@ __all__ = (
     'ReplyKeyboardMarkup',
     'ReplyKeyboardRemove',
     'ResponseParameters',
+    'ReactionType',
+    'ReactionTypeEmoji',
+    'ReactionTypeCustomEmoji',
+    'ReactionCount',
     'SentWebAppMessage',
     'ShippingAddress',
     'ShippingOption',

@@ -7,7 +7,7 @@ aiogram 2.0
    :target: https://pypi.python.org/pypi/aiogram
    :alt: Supported python versions
 
-.. image:: https://img.shields.io/badge/Telegram%20Bot%20API-6.9-blue.svg?style=flat-square&logo=telegram
+.. image:: https://img.shields.io/badge/Telegram%20Bot%20API-7.0-blue.svg?style=flat-square&logo=telegram
    :target: https://core.telegram.org/bots/api
    :alt: Telegram Bot API
 
@@ -20,7 +20,7 @@ aiogram 2.0
 
 You can `read the docs here <http://docs.aiogram.dev/en/latest/>`_.
 
-Facts aiogram 2.0:
+Facts about the aiogram 2.0:
  - The aiogram version 2.25.1 was used as a basis
  - There is support for a stable version of the Telegram Bot API (7.0)
 
