@@ -81,6 +81,8 @@ class Dispatcher(DataMixin, ContextInstanceMixin):
         self.chat_join_request_handlers = Handler(self, middleware_key='chat_join_request')
         self.message_reaction_handlers = Handler(self, middleware_key='message_reaction')
         self.message_reaction_count_handlers = Handler(self, middleware_key='message_reaction_count')
+        self.chat_boost_handlers = Handler(self, middleware_key='chat_boost')
+        self.removed_chat_boost_handlers = Handler(self, middleware_key='removed_chat_boost')
         self.errors_handlers = Handler(self, once=False, middleware_key='error')
 
         self.middleware = MiddlewareManager(self)
@@ -322,6 +324,14 @@ class Dispatcher(DataMixin, ContextInstanceMixin):
                 types.MessageReactionCountUpdated.set_current(update.message_reaction_count)
                 types.Chat.set_current(update.message_reaction_count.chat)
                 return await self.message_reaction_count_handlers.notify(update.message_reaction_count)
+            if update.chat_boost:
+                types.ChatBoostUpdated.set_current(update.chat_boost)
+                types.Chat.set_current(update.chat_boost.chat)
+                return await self.chat_boost_handlers.notify(update.chat_boost)
+            if update.removed_chat_boost:
+                types.ChatBoostRemoved.set_current(update.removed_chat_boost)
+                types.Chat.set_current(update.removed_chat_boost.chat)
+                return await self.chat_boost_handlers.notify(update.removed_chat_boost)
         except Exception as e:
             err = await self.errors_handlers.notify(update, e)
             if err:
@@ -1316,6 +1326,118 @@ class Dispatcher(DataMixin, ContextInstanceMixin):
 
         def decorator(callback):
             self.register_message_reaction_count_handler(
+                callback,
+                *custom_filters,
+                run_task=run_task,
+                **kwargs,
+            )
+            return callback
+
+        return decorator
+
+    def register_chat_boost_handler(self,
+                                    callback: typing.Callable,
+                                    *custom_filters,
+                                    run_task: typing.Optional[bool] = None,
+                                    **kwargs) -> None:
+        """
+        Register handler for chat_boost
+
+        Example:
+
+        .. code-block:: python3
+
+            dp.register_chat_boost(some_chat_boost_handler)
+
+        :param callback:
+        :param custom_filters:
+        :param run_task: run callback in task (no wait results)
+        :param kwargs:
+        """
+        filters_set = self.filters_factory.resolve(
+            self.chat_boost_handlers,
+            *custom_filters,
+            **kwargs,
+        )
+        self.chat_boost_handlers.register(
+            handler=self._wrap_async_task(callback, run_task),
+            filters=filters_set,
+        )
+
+    def chat_boost_handler(self, *custom_filters, run_task=None, **kwargs):
+        """
+        Decorator for chat_boost handler
+
+        Example:
+
+        .. code-block:: python3
+
+            @dp.chat_boost()
+            async def some_handler(update: types.ChatBoostUpdated)
+
+        :param custom_filters:
+        :param run_task: run callback in task (no wait results)
+        :param kwargs:
+        """
+
+        def decorator(callback):
+            self.register_chat_boost_handler(
+                callback,
+                *custom_filters,
+                run_task=run_task,
+                **kwargs,
+            )
+            return callback
+
+        return decorator
+
+    def register_removed_chat_boost_handler(self,
+                                            callback: typing.Callable,
+                                            *custom_filters,
+                                            run_task: typing.Optional[bool] = None,
+                                            **kwargs) -> None:
+        """
+        Register handler for removed_chat_boost
+
+        Example:
+
+        .. code-block:: python3
+
+            dp.register_removed_chat_boost(some_removed_chat_boost_handler)
+
+        :param callback:
+        :param custom_filters:
+        :param run_task: run callback in task (no wait results)
+        :param kwargs:
+        """
+        filters_set = self.filters_factory.resolve(
+            self.removed_chat_boost_handlers,
+            *custom_filters,
+            **kwargs,
+        )
+        self.removed_chat_boost_handlers.register(
+            handler=self._wrap_async_task(callback, run_task),
+            filters=filters_set,
+        )
+
+    def removed_chat_boost_handler(self, *custom_filters, run_task=None, **kwargs):
+        """
+        Decorator for removed_chat_boost handler
+
+        Example:
+
+        .. code-block:: python3
+
+            @dp.removed_chat_boost()
+            async def some_handler(update: types.ChatBoostUpdated)
+
+        :param custom_filters:
+        :param run_task: run callback in task (no wait results)
+        :param kwargs:
+        """
+
+        def decorator(callback):
+            self.register_removed_chat_boost_handler(
                 callback,
                 *custom_filters,
                 run_task=run_task,

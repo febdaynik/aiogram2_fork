@@ -40,7 +40,7 @@ from .story import Story
 from .successful_payment import SuccessfulPayment
 from .text_quote import TextQuote
 from .user import User
-from .user_shared import UserShared
+from .user_shared import UsersShared
 from .venue import Venue
 from .video import Video
 from .video_chat_ended import VideoChatEnded
@@ -123,7 +123,7 @@ class Message(base.TelegramObject):
     pinned_message: Message = fields.Field(base="Message")
     invoice: Invoice = fields.Field(base=Invoice)
     successful_payment: SuccessfulPayment = fields.Field(base=SuccessfulPayment)
-    user_shared: UserShared = fields.Field(base=UserShared)
+    users_shared: UsersShared = fields.Field(base=UsersShared)
     chat_shared: ChatShared = fields.Field(base=ChatShared)
     connected_website: base.String = fields.Field()
     passport_data: PassportData = fields.Field(base=PassportData)
@@ -244,8 +244,8 @@ class Message(base.TelegramObject):
             return ContentType.WRITE_ACCESS_ALLOWED
         if self.chat_shared:
             return ContentType.CHAT_SHARED
-        if self.user_shared:
-            return ContentType.USER_SHARED
+        if self.users_shared:
+            return ContentType.USERS_SHARED
 
         return ContentType.UNKNOWN
 
@@ -3178,7 +3178,7 @@ class ContentType(helper.Helper):
     GENERAL_FORUM_TOPIC_UNHIDDEN = helper.Item()  # general_forum_topic_unhidden
     WRITE_ACCESS_ALLOWED = helper.Item()  # write_access_allowed
     CHAT_SHARED = helper.Item()  # chat_shared
-    USER_SHARED = helper.Item()  # user_shared
+    USERS_SHARED = helper.Item()  # users_shared
 
     UNKNOWN = helper.Item()  # unknown
     ANY = helper.Item()  # any
@@ -3258,7 +3258,7 @@ class ContentTypes(helper.Helper):
     GENERAL_FORUM_TOPIC_UNHIDDEN = helper.ListItem()  # general_forum_topic_unhidden
     WRITE_ACCESS_ALLOWED = helper.ListItem()  # write_access_allowed
     CHAT_SHARED = helper.ListItem()  # chat_shared
-    USER_SHARED = helper.ListItem()  # user_shared
+    USERS_SHARED = helper.ListItem()  # users_shared
 
     UNKNOWN = helper.ListItem()  # unknown
     ANY = helper.ListItem()  # any

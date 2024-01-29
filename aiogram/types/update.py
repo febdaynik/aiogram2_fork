@@ -5,6 +5,8 @@ from . import fields
 from .callback_query import CallbackQuery
 from .chat_member_updated import ChatMemberUpdated
 from .chosen_inline_result import ChosenInlineResult
+from .chat_boost_removed import ChatBoostRemoved
+from .chat_boost_updated import ChatBoostUpdated
 from .inline_query import InlineQuery
 from .message import Message
 from .poll import Poll, PollAnswer
@@ -40,6 +42,8 @@ class Update(base.TelegramObject):
     chat_join_request: ChatJoinRequest = fields.Field(base=ChatJoinRequest)
     message_reaction: MessageReactionUpdated = fields.Field(base=MessageReactionUpdated)
     message_reaction_count: MessageReactionCountUpdated = fields.Field(base=MessageReactionCountUpdated)
+    chat_boost: ChatBoostUpdated = fields.Field(base=ChatBoostUpdated)
+    removed_chat_boost: ChatBoostRemoved = fields.Field(base=ChatBoostRemoved)
 
     def __hash__(self):
         return self.update_id
@@ -75,6 +79,8 @@ class AllowedUpdates(helper.Helper):
     CHAT_JOIN_REQUEST = helper.ListItem()  # chat_join_request
     MESSAGE_REACTION = helper.ListItem()  # message_reaction
     MESSAGE_REACTION_COUNT = helper.ListItem()  # message_reaction_count
+    CHAT_BOOST = helper.ListItem()  # chat_boost
+    REMOVED_CHAT_BOOST = helper.ListItem()  # removed_chat_boost
 
     @classmethod
     def default(cls):

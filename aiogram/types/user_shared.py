@@ -1,12 +1,14 @@
+import typing
+
 from . import base, fields
 
 
-class UserShared(base.TelegramObject):
+class UsersShared(base.TelegramObject):
     """
-    This object contains information about the user whose identifier was
-    shared with the bot using a KeyboardButtonRequestUser button.
+    This object contains information about the users whose identifiers were
+    shared with the bot using a KeyboardButtonRequestUsers button.
 
-    https://core.telegram.org/bots/api#usershared
+    https://core.telegram.org/bots/api#usersshared
     """
     request_id: base.Integer = fields.Field()
-    user_id: base.Integer = fields.Field()
+    user_ids: typing.List[base.Integer] = fields.Field()

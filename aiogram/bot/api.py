@@ -328,3 +328,6 @@ class Methods(Helper):
     SEND_GAME = Item()  # sendGame
     SET_GAME_SCORE = Item()  # setGameScore
     GET_GAME_HIGH_SCORES = Item()  # getGameHighScores
+
+    # Boosts
+    GET_USER_CHAT_BOOSTS = Item()  # getUserChatBoosts

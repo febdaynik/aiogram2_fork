@@ -27,6 +27,10 @@ from .chat_photo import ChatPhoto
 from .chat_shared import ChatShared
 from .chosen_inline_result import ChosenInlineResult
 from .contact import Contact
+from .chat_boost import ChatBoost
+from .chat_boost_removed import ChatBoostRemoved
+from .chat_boost_updated import ChatBoostUpdated
+from .chat_boost_source import ChatBoostSource, ChatBoostSourcePremium, ChatBoostSourceGiveaway, ChatBoostSourceGiftCode
 from .dice import Dice, DiceEmoji
 from .document import Document
 from .encrypted_credentials import EncryptedCredentials
@@ -82,7 +86,7 @@ from .poll import PollOption, Poll, PollAnswer, PollType
 from .pre_checkout_query import PreCheckoutQuery
 from .proximity_alert_triggered import ProximityAlertTriggered
 from .reply_keyboard import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButtonPollType, \
-    KeyboardButtonRequestChat, KeyboardButtonRequestUser
+    KeyboardButtonRequestChat, KeyboardButtonRequestUsers
 from .response_parameters import ResponseParameters
 from .reaction_type import ReactionType, ReactionTypeEmoji, ReactionTypeCustomEmoji
 from .reaction_count import ReactionCount
@@ -100,7 +104,8 @@ from .text_quote import TextQuote
 from .update import AllowedUpdates, Update
 from .user import User
 from .user_profile_photos import UserProfilePhotos
-from .user_shared import UserShared
+from .user_shared import UsersShared
+from .user_chat_boosts import UserChatBoosts
 from .venue import Venue
 from .video import Video
 from .video_chat_ended import VideoChatEnded
@@ -215,7 +220,7 @@ __all__ = (
     'KeyboardButton',
     'KeyboardButtonPollType',
     'KeyboardButtonRequestChat',
-    'KeyboardButtonRequestUser',
+    'KeyboardButtonRequestUsers',
     'LabeledPrice',
     'Location',
     'LoginUrl',
@@ -294,8 +299,9 @@ __all__ = (
     'GeneralForumTopicHidden',
     'GeneralForumTopicUnhidden',
     'WriteAccessAllowed',
-    "ChatShared",
-    "UserShared",
+    'ChatShared',
+    'UsersShared',
+    'UserChatBoosts',
     'base',
     'fields',
 )

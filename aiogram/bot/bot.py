@@ -4481,3 +4481,21 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
         result = await self.request(api.Methods.GET_GAME_HIGH_SCORES, payload)
 
         return [types.GameHighScore(**gamehighscore) for gamehighscore in result]
+
+    async def get_user_chat_boosts(self, chat_id: typing.Union[base.Integer, base.String],
+                                   user_id: base.Integer) -> types.UserChatBoosts:
+        """
+        Use this method to get the list of boosts added to a chat by a user. Requires administrator rights in the chat.
+
+        Returns a UserChatBoosts object.
+
+        Source: https://core.telegram.org/bots/api#getuserchatboosts
+
+        :param chat_id: Unique identifier for the chat or username of the channel
+        :param user_id: Unique identifier of the target user
+        :return:
+        """
+        payload = generate_payload(**locals())
+        result = await self.request(api.Methods.GET_USER_CHAT_BOOSTS, payload)
+
+        return types.UserChatBoosts(**result)
