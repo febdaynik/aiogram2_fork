@@ -81,6 +81,7 @@ from .message_reaction import MessageReactionUpdated
 from .message_reaction_count import MessageReactionCountUpdated
 from .message_origin import MessageOrigin, MessageOriginChat, MessageOriginChannel, MessageOriginUser, \
     MessageOriginHiddenUser
+from .maybe_inaccessible_message import MaybeInaccessibleMessage
 from .order_info import OrderInfo
 from .passport_data import PassportData
 from .passport_element_error import PassportElementError, PassportElementErrorDataField, PassportElementErrorFile, \
@@ -249,6 +250,7 @@ __all__ = (
     'MessageOriginHiddenUser',
     'MessageOriginChannel',
     'MessageOriginChat',
+    'MaybeInaccessibleMessage',
     'OrderInfo',
     'ParseMode',
     'PassportData',

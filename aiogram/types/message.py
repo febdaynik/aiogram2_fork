@@ -30,6 +30,7 @@ from .giveaway import Giveaway
 from .inline_keyboard import InlineKeyboardMarkup
 from .input_media import InputMedia, MediaGroup
 from .invoice import Invoice
+from .inaccessible_message import InaccessibleMessage
 from .location import Location
 from .link_preview_options import LinkPreviewOptions
 from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
@@ -123,7 +124,7 @@ class Message(MaybeInaccessibleMessage):
     message_auto_delete_timer_changed: MessageAutoDeleteTimerChanged = fields.Field(base=MessageAutoDeleteTimerChanged)
     migrate_to_chat_id: base.Integer = fields.Field()
     migrate_from_chat_id: base.Integer = fields.Field()
-    pinned_message: MaybeInaccessibleMessage = fields.Field(base=MaybeInaccessibleMessage)
+    pinned_message: typing.Union['Message', InaccessibleMessage] = fields.Field(base='Message')
     invoice: Invoice = fields.Field(base=Invoice)
     successful_payment: SuccessfulPayment = fields.Field(base=SuccessfulPayment)
     users_shared: UsersShared = fields.Field(base=UsersShared)

@@ -3,6 +3,8 @@ import typing
 from . import base
 from . import fields
 from .maybe_inaccessible_message import MaybeInaccessibleMessage
+from .message import Message
+from .inaccessible_message import InaccessibleMessage
 from .user import User
 
 
@@ -22,7 +24,7 @@ class CallbackQuery(MaybeInaccessibleMessage):
     """
     id: base.String = fields.Field()
     from_user: User = fields.Field(alias='from', base=User)
-    message: MaybeInaccessibleMessage = fields.Field(base=MaybeInaccessibleMessage)
+    message: typing.Union[Message, InaccessibleMessage] = fields.Field(base=Message)
     inline_message_id: base.String = fields.Field()
     chat_instance: base.String = fields.Field()
     data: base.String = fields.Field()
