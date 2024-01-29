@@ -3,6 +3,7 @@ from __future__ import annotations
 import datetime
 import functools
 import typing
+from typing import TYPE_CHECKING
 
 from . import base, fields
 from .animation import Animation
@@ -21,6 +22,11 @@ from .forum_topic_reopened import ForumTopicReopened
 from .game import Game
 from .general_forum_topic_hidden import GeneralForumTopicHidden
 from .general_forum_topic_unhidden import GeneralForumTopicUnhidden
+from .giveaway_created import GiveawayCreated
+if TYPE_CHECKING:
+    from .giveaway_completed import GiveawayCompleted
+from .giveaway_winners import GiveawayWinners
+from .giveaway import Giveaway
 from .inline_keyboard import InlineKeyboardMarkup
 from .input_media import InputMedia, MediaGroup
 from .invoice import Invoice
@@ -29,6 +35,8 @@ from .link_preview_options import LinkPreviewOptions
 from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
 from .message_entity import MessageEntity
 from .message_id import MessageId
+from .message_origin import MessageOrigin
+from .maybe_inaccessible_message import MaybeInaccessibleMessage
 from .passport_data import PassportData
 from .photo_size import PhotoSize
 from .poll import Poll
@@ -60,7 +68,7 @@ from ..utils import markdown as md
 from ..utils.text_decorations import html_decoration, markdown_decoration
 
 
-class Message(base.TelegramObject):
+class Message(MaybeInaccessibleMessage):
     """
     This object represents a message.
 
@@ -73,14 +81,10 @@ class Message(base.TelegramObject):
     sender_chat: Chat = fields.Field(base=Chat)
     date: datetime.datetime = fields.DateTimeField()
     chat: Chat = fields.Field(base=Chat)
-    forward_from: User = fields.Field(base=User)
-    forward_from_chat: Chat = fields.Field(base=Chat)
-    forward_from_message_id: base.Integer = fields.Field()
-    forward_signature: base.String = fields.Field()
-    forward_date: datetime.datetime = fields.DateTimeField()
+    forward_origin: MessageOrigin = fields.Field(base=MessageOrigin)
     is_topic_message: base.Boolean = fields.Field()
     is_automatic_forward: base.Boolean = fields.Field()
-    reply_to_message: Message = fields.Field(base="Message")
+    reply_to_message: 'Message' = fields.Field(base="Message")
     external_reply: ExternalReplyInfo = fields.Field(base=ExternalReplyInfo)
     quote: TextQuote = fields.Field(base=TextQuote)
     via_bot: User = fields.Field(base=User)
@@ -88,7 +92,6 @@ class Message(base.TelegramObject):
     has_protected_content: base.Boolean = fields.Field()
     media_group_id: base.String = fields.Field()
     author_signature: base.String = fields.Field()
-    forward_sender_name: base.String = fields.Field()
     text: base.String = fields.Field()
     entities: typing.List[MessageEntity] = fields.ListField(base=MessageEntity)
     link_preview_options: LinkPreviewOptions = fields.Field(base=LinkPreviewOptions)
@@ -120,7 +123,7 @@ class Message(base.TelegramObject):
     message_auto_delete_timer_changed: MessageAutoDeleteTimerChanged = fields.Field(base=MessageAutoDeleteTimerChanged)
     migrate_to_chat_id: base.Integer = fields.Field()
     migrate_from_chat_id: base.Integer = fields.Field()
-    pinned_message: Message = fields.Field(base="Message")
+    pinned_message: MaybeInaccessibleMessage = fields.Field(base=MaybeInaccessibleMessage)
     invoice: Invoice = fields.Field(base=Invoice)
     successful_payment: SuccessfulPayment = fields.Field(base=SuccessfulPayment)
     users_shared: UsersShared = fields.Field(base=UsersShared)
@@ -145,6 +148,10 @@ class Message(base.TelegramObject):
     general_forum_topic_hidden: GeneralForumTopicHidden = fields.Field(base=GeneralForumTopicHidden)
     general_forum_topic_unhidden: GeneralForumTopicUnhidden = fields.Field(base=GeneralForumTopicUnhidden)
     write_access_allowed: WriteAccessAllowed = fields.Field(base=WriteAccessAllowed)
+    giveaway_created: GiveawayCreated = fields.Field(base=GiveawayCreated)
+    giveaway: Giveaway = fields.Field(base=Giveaway)
+    giveaway_winners: GiveawayWinners = fields.Field(base=GiveawayWinners)
+    giveaway_completed: 'GiveawayCompleted' = fields.Field(base='GiveawayCompleted')
     has_media_spoiler: base.Boolean = fields.Field()
 
     @property
@@ -252,11 +259,11 @@ class Message(base.TelegramObject):
     def is_forward(self) -> bool:
         """
         Check that the message is forwarded.
-        Only `forward_date` is required to be in forwarded message.
+        The forwarded message will have a types.MessageOrigin object
 
         :return: bool
         """
-        return bool(self.forward_date)
+        return bool(self.forward_origin)
 
     def is_command(self) -> bool:
         """

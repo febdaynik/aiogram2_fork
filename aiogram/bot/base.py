@@ -360,7 +360,7 @@ class BaseBot:
             setattr(self, '_link_preview_options', None)
         else:
             if not isinstance(value, LinkPreviewOptions):
-                raise TypeError(f"Disable web page preview must be bool, not {type(value)}")
+                raise TypeError(f"Disable web page preview must be types.LinkPreviewOptions, not {type(value)}")
             setattr(self, '_link_preview_options', value)
 
     @link_preview_options.deleter

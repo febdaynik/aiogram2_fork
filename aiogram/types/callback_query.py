@@ -2,11 +2,11 @@ import typing
 
 from . import base
 from . import fields
-from .message import Message
+from .maybe_inaccessible_message import MaybeInaccessibleMessage
 from .user import User
 
 
-class CallbackQuery(base.TelegramObject):
+class CallbackQuery(MaybeInaccessibleMessage):
     """
     This object represents an incoming callback query from a callback button in an inline keyboard.
 
@@ -22,7 +22,7 @@ class CallbackQuery(base.TelegramObject):
     """
     id: base.String = fields.Field()
     from_user: User = fields.Field(alias='from', base=User)
-    message: Message = fields.Field(base=Message)
+    message: MaybeInaccessibleMessage = fields.Field(base=MaybeInaccessibleMessage)
     inline_message_id: base.String = fields.Field()
     chat_instance: base.String = fields.Field()
     data: base.String = fields.Field()

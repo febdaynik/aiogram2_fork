@@ -13,7 +13,7 @@ class TextQuote(base.TelegramObject):
 	"""
 
 	text: base.String = fields.Field()
-	entities: typing.List[MessageEntity] = fields.Field(base=MessageEntity)
+	entities: typing.List[MessageEntity] = fields.ListField(base=MessageEntity)
 	position: base.Integer = fields.Field()
 	is_manual: base.Boolean = fields.Field()
 

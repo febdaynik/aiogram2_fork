@@ -15,9 +15,12 @@ from .voice import Voice
 from .contact import Contact
 from .dice import Dice
 from .game import Game
-# from .giveaway import Game
+from .giveaway import Giveaway
+from .giveaway_winners import GiveawayWinners
 from .invoice import Invoice
 from .location import Location
+from .link_preview_options import LinkPreviewOptions
+from .message_origin import MessageOrigin
 from .poll import Poll
 from .venue import Venue
 
@@ -30,14 +33,14 @@ class ExternalReplyInfo(base.TelegramObject):
 	Source: https://core.telegram.org/bots/api#externalreplyinfo
 	"""
 
-	# origin: base.String = fields.Field()  # MessageOrigin
+	origin: MessageOrigin = fields.Field(base=MessageOrigin)
 	chat: Chat = fields.Field(base=Chat)
 	message_id: base.Integer = fields.Field()
-	# link_preview_options:  # LinkPreviewOptions
+	link_preview_options: LinkPreviewOptions = fields.Field(base=LinkPreviewOptions)
 	animation: Animation = fields.Field(base=Animation)
 	audio: Audio = fields.Field(base=Audio)
 	document: Document = fields.Field(base=Document)
-	photo: typing.List[PhotoSize] = fields.Field(base=PhotoSize)
+	photo: typing.List[PhotoSize] = fields.ListField(base=PhotoSize)
 	sticker: Sticker = fields.Field(base=Sticker)
 	story: Story = fields.Field(base=Story)
 	video: Video = fields.Field(base=Video)
@@ -47,8 +50,8 @@ class ExternalReplyInfo(base.TelegramObject):
 	contact: Contact = fields.Field(base=Contact)
 	dice: Dice = fields.Field(base=Dice)
 	game: Game = fields.Field(base=Game)
-	# giveaway: Giveaway = fields.Field(base=Giveaway)  # Giveaway
-	# giveaway_winners:  # GiveawayWinners
+	giveaway: Giveaway = fields.Field(base=Giveaway)
+	giveaway_winners: GiveawayWinners = fields.ListField(base=GiveawayWinners)
 	invoice: Invoice = fields.Field(base=Invoice)
 	location: Location = fields.Field(base=Location)
 	poll: Poll = fields.Field(base=Poll)

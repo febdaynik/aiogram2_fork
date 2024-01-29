@@ -17,5 +17,5 @@ class ReplyParameters(base.TelegramObject):
 	allow_sending_without_reply: base.Boolean = fields.Field()
 	quote: base.String = fields.Field()
 	quote_parse_mode: base.String = fields.Field()
-	quote_entities: typing.List[MessageEntity] = fields.Field()
+	quote_entities: typing.List[MessageEntity] = fields.ListField()
 	quote_position: base.Integer = fields.Field()

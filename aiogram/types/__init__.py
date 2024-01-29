@@ -47,6 +47,10 @@ from .game import Game
 from .game_high_score import GameHighScore
 from .general_forum_topic_hidden import GeneralForumTopicHidden
 from .general_forum_topic_unhidden import GeneralForumTopicUnhidden
+from .giveaway_created import GiveawayCreated
+from .giveaway_winners import GiveawayWinners
+from .giveaway_completed import GiveawayCompleted
+from .giveaway import Giveaway
 from .inline_keyboard import InlineKeyboardButton, InlineKeyboardMarkup
 from .inline_query import InlineQuery
 from .inline_query_result import InlineQueryResult, InlineQueryResultArticle, InlineQueryResultAudio, \
@@ -75,6 +79,8 @@ from .message_entity import MessageEntity, MessageEntityType
 from .message_id import MessageId
 from .message_reaction import MessageReactionUpdated
 from .message_reaction_count import MessageReactionCountUpdated
+from .message_origin import MessageOrigin, MessageOriginChat, MessageOriginChannel, MessageOriginUser, \
+    MessageOriginHiddenUser
 from .order_info import OrderInfo
 from .passport_data import PassportData
 from .passport_element_error import PassportElementError, PassportElementErrorDataField, PassportElementErrorFile, \
@@ -238,6 +244,11 @@ __all__ = (
     'MessageId',
     'MessageReactionUpdated',
     'MessageReactionCountUpdated',
+    'MessageOrigin',
+    'MessageOriginUser',
+    'MessageOriginHiddenUser',
+    'MessageOriginChannel',
+    'MessageOriginChat',
     'OrderInfo',
     'ParseMode',
     'PassportData',
@@ -298,6 +309,10 @@ __all__ = (
     'ForumTopicEdited',
     'GeneralForumTopicHidden',
     'GeneralForumTopicUnhidden',
+    'GiveawayCreated',
+    'GiveawayCompleted',
+    'GiveawayWinners',
+    'Giveaway',
     'WriteAccessAllowed',
     'ChatShared',
     'UsersShared',

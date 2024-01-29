@@ -32,7 +32,7 @@ class ChatBoostSource(base.TelegramObject):
 		}
 		class_ = mapping.get(type_)
 		if not class_:
-			raise ValueError(f'Unknown ReactionType type: {type_}')
+			raise ValueError(f'Unknown ChatBoostSource type: {type_}')
 		return class_(**kwargs)
 
 

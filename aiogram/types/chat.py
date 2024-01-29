@@ -53,6 +53,11 @@ class Chat(base.TelegramObject):
     has_hidden_members: base.Boolean = fields.Field()
     has_aggressive_anti_spam_enabled: base.Boolean = fields.Field()
     available_reactions: typing.List[ReactionType] = fields.Field(base=ReactionType)
+    accent_color_id: base.Integer = fields.Field()
+    background_custom_emoji_id: base.String = fields.Field()
+    profile_accent_color_id: base.Integer = fields.Field()
+    profile_background_custom_emoji_id: base.String = fields.Field()
+    has_visible_history: base.Boolean = fields.Field()
 
     def __hash__(self):
         return self.id
