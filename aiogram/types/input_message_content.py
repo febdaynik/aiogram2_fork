@@ -4,6 +4,7 @@ from . import base
 from . import fields
 from .message_entity import MessageEntity
 from .labeled_price import LabeledPrice
+from .link_preview_options import LinkPreviewOptions
 from ..utils.payload import generate_payload
 
 
@@ -146,7 +147,7 @@ class InputTextMessageContent(InputMessageContent):
     message_text: base.String = fields.Field()
     parse_mode: typing.Optional[base.String] = fields.Field()
     entities: typing.Optional[typing.List[MessageEntity]] = fields.Field()
-    disable_web_page_preview: base.Boolean = fields.Field()
+    link_preview_options: typing.Optional[LinkPreviewOptions] = fields.Field(base=LinkPreviewOptions)
 
     def safe_get_parse_mode(self):
         try:
@@ -154,9 +155,9 @@ class InputTextMessageContent(InputMessageContent):
         except RuntimeError:
             pass
 
-    def safe_get_disable_web_page_preview(self):
+    def safe_get_link_preview_options(self):
         try:
-            return self.bot.disable_web_page_preview
+            return self.bot.link_preview_options
         except RuntimeError:
             pass
 
@@ -165,18 +166,18 @@ class InputTextMessageContent(InputMessageContent):
             message_text: base.String,
             parse_mode: typing.Optional[base.String] = None,
             entities: typing.Optional[typing.List[MessageEntity]] = None,
-            disable_web_page_preview: typing.Optional[base.Boolean] = None,
+            link_preview_options: typing.Optional[LinkPreviewOptions] = None,
     ):
         if parse_mode is None:
             parse_mode = self.safe_get_parse_mode()
-        if disable_web_page_preview is None:
-            disable_web_page_preview = self.safe_get_disable_web_page_preview()
+        if link_preview_options is None:
+            link_preview_options = self.safe_get_link_preview_options()
 
         super().__init__(
             message_text=message_text,
             parse_mode=parse_mode,
             entities=entities,
-            disable_web_page_preview=disable_web_page_preview,
+            link_preview_options=link_preview_options,
         )
 
 

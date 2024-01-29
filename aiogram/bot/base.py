@@ -15,7 +15,7 @@ from aiohttp.helpers import sentinel
 
 from . import api
 from .api import TelegramAPIServer, TELEGRAM_PRODUCTION
-from ..types import ParseMode, base
+from ..types import ParseMode, base, LinkPreviewOptions
 from ..utils import json
 from ..utils.auth_widget import check_integrity
 from ..utils.deprecated import deprecated
@@ -37,7 +37,7 @@ class BaseBot:
             proxy_auth: Optional[aiohttp.BasicAuth] = None,
             validate_token: Optional[base.Boolean] = True,
             parse_mode: typing.Optional[base.String] = None,
-            disable_web_page_preview: Optional[base.Boolean] = None,
+            link_preview_options: Optional[LinkPreviewOptions] = None,
             protect_content: Optional[base.Boolean] = None,
             timeout: typing.Optional[typing.Union[base.Integer, base.Float, aiohttp.ClientTimeout]] = None,
             server: TelegramAPIServer = TELEGRAM_PRODUCTION
@@ -59,8 +59,9 @@ class BaseBot:
         :type validate_token: :obj:`bool`
         :param parse_mode: You can set default parse mode
         :type parse_mode: :obj:`str`
-        :param disable_web_page_preview: You can set default disable web page preview parameter
-        :type disable_web_page_preview: :obj:`bool`
+
+        :param link_preview_options: Link preview generation options for the message
+
         :param protect_content: Protects the contents of sent messages
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
@@ -114,7 +115,7 @@ class BaseBot:
 
         self.parse_mode = parse_mode
 
-        self.disable_web_page_preview = disable_web_page_preview
+        self.link_preview_options = link_preview_options
         self.protect_content = protect_content
 
     async def get_new_session(self) -> aiohttp.ClientSession:
@@ -350,21 +351,21 @@ class BaseBot:
         self.parse_mode = None
 
     @property
-    def disable_web_page_preview(self):
-        return getattr(self, '_disable_web_page_preview', None)
+    def link_preview_options(self):
+        return getattr(self, '_link_preview_options', None)
 
-    @disable_web_page_preview.setter
-    def disable_web_page_preview(self, value):
+    @link_preview_options.setter
+    def link_preview_options(self, value):
         if value is None:
-            setattr(self, '_disable_web_page_preview', None)
+            setattr(self, '_link_preview_options', None)
         else:
-            if not isinstance(value, bool):
+            if not isinstance(value, LinkPreviewOptions):
                 raise TypeError(f"Disable web page preview must be bool, not {type(value)}")
-            setattr(self, '_disable_web_page_preview', value)
+            setattr(self, '_link_preview_options', value)
 
-    @disable_web_page_preview.deleter
-    def disable_web_page_preview(self):
-        self.disable_web_page_preview = None
+    @link_preview_options.deleter
+    def link_preview_options(self):
+        self.link_preview_options = None
 
     @property
     def protect_content(self):

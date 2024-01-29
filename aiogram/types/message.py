@@ -25,6 +25,7 @@ from .inline_keyboard import InlineKeyboardMarkup
 from .input_media import InputMedia, MediaGroup
 from .invoice import Invoice
 from .location import Location
+from .link_preview_options import LinkPreviewOptions
 from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
 from .message_entity import MessageEntity
 from .message_id import MessageId
@@ -90,6 +91,7 @@ class Message(base.TelegramObject):
     forward_sender_name: base.String = fields.Field()
     text: base.String = fields.Field()
     entities: typing.List[MessageEntity] = fields.ListField(base=MessageEntity)
+    link_preview_options: LinkPreviewOptions = fields.Field(base=LinkPreviewOptions)
     caption_entities: typing.List[MessageEntity] = fields.ListField(base=MessageEntity)
     audio: Audio = fields.Field(base=Audio)
     document: Document = fields.Field(base=Document)
@@ -390,10 +392,9 @@ class Message(base.TelegramObject):
             text: base.String,
             parse_mode: typing.Optional[base.String] = None,
             entities: typing.Optional[typing.List[MessageEntity]] = None,
-            disable_web_page_preview: typing.Optional[base.Boolean] = None,
+            link_preview_options: typing.Optional[LinkPreviewOptions] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -401,7 +402,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -418,8 +418,7 @@ class Message(base.TelegramObject):
             which can be specified instead of parse_mode
         :type entities: :obj:`typing.Optional[typing.List[MessageEntity]]`
 
-        :param disable_web_page_preview: Disables link previews for links in this message
-        :type disable_web_page_preview: :obj:`typing.Optional[base.Boolean]`
+        :param link_preview_options: Link preview generation options for the message
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound
         :type disable_notification: :obj:`typing.Optional[base.Boolean]`
@@ -428,17 +427,10 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
-
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
 
         :param reply_parameters: Description of the message to reply to.
             Do not specify together with reply and allow_sending_without_reply
@@ -452,13 +444,10 @@ class Message(base.TelegramObject):
             text=text,
             parse_mode=parse_mode,
             entities=entities,
-            disable_web_page_preview=disable_web_page_preview,
+            link_preview_options=link_preview_options,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -470,7 +459,6 @@ class Message(base.TelegramObject):
             caption_entities: typing.Optional[typing.List[MessageEntity]] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -478,7 +466,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -507,17 +494,10 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
-
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
 
         :param reply_parameters: Description of the message to reply to.
             Do not specify together with reply and allow_sending_without_reply
@@ -534,10 +514,7 @@ class Message(base.TelegramObject):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -553,7 +530,6 @@ class Message(base.TelegramObject):
             thumbnail: typing.Union[typing.Union[base.InputFile, base.String], None] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -561,7 +537,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -606,20 +581,12 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -637,10 +604,7 @@ class Message(base.TelegramObject):
             thumbnail=thumbnail,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -656,7 +620,6 @@ class Message(base.TelegramObject):
             caption_entities: typing.Optional[typing.List[MessageEntity]] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -664,7 +627,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -711,20 +673,12 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[typing.Union[types.InlineKeyboardMarkup, types.ReplyKeyboardMarkup,
             types.ReplyKeyboardRemove, types.ForceReply], None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -742,10 +696,7 @@ class Message(base.TelegramObject):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -759,7 +710,6 @@ class Message(base.TelegramObject):
             disable_content_type_detection: typing.Optional[base.Boolean] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -767,7 +717,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -807,10 +756,6 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
             reply keyboard or to force a reply from the user
@@ -818,11 +763,7 @@ class Message(base.TelegramObject):
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply],
             None]`
 
-        :param reply: True if the message is a reply
-        :type reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -838,10 +779,7 @@ class Message(base.TelegramObject):
             disable_content_type_detection=disable_content_type_detection,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -858,7 +796,6 @@ class Message(base.TelegramObject):
             supports_streaming: typing.Optional[base.Boolean] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -866,7 +803,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -913,20 +849,12 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -945,10 +873,7 @@ class Message(base.TelegramObject):
             supports_streaming=supports_streaming,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -961,7 +886,6 @@ class Message(base.TelegramObject):
             duration: typing.Optional[base.Integer] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -969,7 +893,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -1005,20 +928,12 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -1033,10 +948,7 @@ class Message(base.TelegramObject):
             duration=duration,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -1048,7 +960,6 @@ class Message(base.TelegramObject):
             thumbnail: typing.Union[typing.Union[base.InputFile, base.String], None] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -1056,7 +967,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -1085,20 +995,12 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -1112,10 +1014,7 @@ class Message(base.TelegramObject):
             thumbnail=thumbnail,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -1124,8 +1023,6 @@ class Message(base.TelegramObject):
             media: typing.Union[MediaGroup, typing.List],
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> typing.List[Message]:
         """
@@ -1147,15 +1044,7 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, an array of the sent Messages is returned.
         :rtype: typing.List[types.Message]
@@ -1166,10 +1055,7 @@ class Message(base.TelegramObject):
             media=media,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
         )
 
     async def answer_location(
@@ -1179,7 +1065,6 @@ class Message(base.TelegramObject):
             live_period: typing.Optional[base.Integer] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             horizontal_accuracy: typing.Optional[base.Float] = None,
             heading: typing.Optional[base.Integer] = None,
             proximity_alert_radius: typing.Optional[base.Integer] = None,
@@ -1190,7 +1075,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -1227,20 +1111,12 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -1256,10 +1132,7 @@ class Message(base.TelegramObject):
             proximity_alert_radius=proximity_alert_radius,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -1275,7 +1148,6 @@ class Message(base.TelegramObject):
             google_place_type: typing.Optional[base.String] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -1283,7 +1155,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -1324,10 +1195,6 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
             reply keyboard or to force a reply from the user
@@ -1335,11 +1202,7 @@ class Message(base.TelegramObject):
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply,
             None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -1357,10 +1220,7 @@ class Message(base.TelegramObject):
             google_place_type=google_place_type,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -1371,7 +1231,6 @@ class Message(base.TelegramObject):
             last_name: typing.Optional[base.String] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -1379,7 +1238,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -1403,20 +1261,12 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -1429,10 +1279,7 @@ class Message(base.TelegramObject):
             last_name=last_name,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -1441,7 +1288,6 @@ class Message(base.TelegramObject):
             sticker: typing.Union[base.InputFile, base.String],
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -1449,7 +1295,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -1467,17 +1312,10 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
-
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
 
         :param reply_parameters: Description of the message to reply to.
             Do not specify together with reply and allow_sending_without_reply
@@ -1491,10 +1329,7 @@ class Message(base.TelegramObject):
             sticker=sticker,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -1514,7 +1349,6 @@ class Message(base.TelegramObject):
             is_closed: typing.Optional[base.Boolean] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -1522,7 +1356,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -1585,10 +1418,6 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
             reply keyboard or to force a reply from the user
@@ -1596,11 +1425,7 @@ class Message(base.TelegramObject):
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply,
             None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -1622,10 +1447,7 @@ class Message(base.TelegramObject):
             is_closed=is_closed,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -1634,7 +1456,6 @@ class Message(base.TelegramObject):
             emoji: typing.Optional[base.String] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -1642,7 +1463,6 @@ class Message(base.TelegramObject):
                 ForceReply,
                 None,
             ] = None,
-            reply: base.Boolean = False,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> Message:
         """
@@ -1665,10 +1485,6 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
             reply keyboard or to force a reply from the user
@@ -1676,11 +1492,7 @@ class Message(base.TelegramObject):
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply,
             None]`
 
-        :param reply: fill 'reply_to_message_id'
-        :type reply: :obj:`base.Boolean`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -1691,10 +1503,7 @@ class Message(base.TelegramObject):
             emoji=emoji,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id if reply else None,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
         )
 
@@ -1729,10 +1538,9 @@ class Message(base.TelegramObject):
             text: base.String,
             parse_mode: typing.Optional[base.String] = None,
             entities: typing.Optional[typing.List[MessageEntity]] = None,
-            disable_web_page_preview: typing.Optional[base.Boolean] = None,
+            link_preview_options: typing.Optional[LinkPreviewOptions] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -1756,8 +1564,7 @@ class Message(base.TelegramObject):
             which can be specified instead of parse_mode
         :type entities: :obj:`typing.Optional[typing.List[MessageEntity]]`
 
-        :param disable_web_page_preview: Disables link previews for links in this message
-        :type disable_web_page_preview: :obj:`typing.Optional[base.Boolean]`
+        :param link_preview_options: Link preview generation options for the message
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound
         :type disable_notification: :obj:`typing.Optional[base.Boolean]`
@@ -1766,17 +1573,12 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -1787,13 +1589,10 @@ class Message(base.TelegramObject):
             text=text,
             parse_mode=parse_mode,
             entities=entities,
-            disable_web_page_preview=disable_web_page_preview,
+            link_preview_options=link_preview_options,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -1805,7 +1604,6 @@ class Message(base.TelegramObject):
             caption_entities: typing.Optional[typing.List[MessageEntity]] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -1841,17 +1639,12 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -1865,10 +1658,7 @@ class Message(base.TelegramObject):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -1884,7 +1674,6 @@ class Message(base.TelegramObject):
             thumbnail: typing.Union[typing.Union[base.InputFile, base.String], None] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -1936,17 +1725,12 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -1964,10 +1748,7 @@ class Message(base.TelegramObject):
             thumbnail=thumbnail,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -1983,7 +1764,6 @@ class Message(base.TelegramObject):
             caption_entities: typing.Optional[typing.List[MessageEntity]] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -2037,17 +1817,12 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[typing.Union[types.InlineKeyboardMarkup, types.ReplyKeyboardMarkup,
             types.ReplyKeyboardRemove, types.ForceReply], None]`
 
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -2065,10 +1840,7 @@ class Message(base.TelegramObject):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -2082,7 +1854,6 @@ class Message(base.TelegramObject):
             disable_content_type_detection: typing.Optional[base.Boolean] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -2129,10 +1900,6 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
             reply keyboard or to force a reply from the user
@@ -2141,7 +1908,6 @@ class Message(base.TelegramObject):
             None]`
 
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -2157,10 +1923,7 @@ class Message(base.TelegramObject):
             disable_content_type_detection=disable_content_type_detection,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -2177,7 +1940,6 @@ class Message(base.TelegramObject):
             supports_streaming: typing.Optional[base.Boolean] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -2231,10 +1993,6 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
@@ -2260,10 +2018,7 @@ class Message(base.TelegramObject):
             supports_streaming=supports_streaming,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -2276,7 +2031,6 @@ class Message(base.TelegramObject):
             duration: typing.Optional[base.Integer] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -2319,17 +2073,12 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
             types.ReplyKeyboardMarkup, types.ReplyKeyboardRemove, types.ForceReply, None]`
 
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -2344,10 +2093,7 @@ class Message(base.TelegramObject):
             duration=duration,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -2359,7 +2105,6 @@ class Message(base.TelegramObject):
             thumbnail: typing.Union[typing.Union[base.InputFile, base.String], None] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -2395,10 +2140,6 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
@@ -2418,10 +2159,7 @@ class Message(base.TelegramObject):
             thumbnail=thumbnail,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -2430,7 +2168,6 @@ class Message(base.TelegramObject):
             media: typing.Union[MediaGroup, typing.List],
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_parameters: typing.Optional[ReplyParameters] = None,
     ) -> typing.List[Message]:
         """
@@ -2452,12 +2189,7 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with reply and allow_sending_without_reply
 
         :return: On success, an array of the sent Messages is returned.
         :rtype: typing.List[types.Message]
@@ -2468,10 +2200,7 @@ class Message(base.TelegramObject):
             media=media,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
         )
 
     async def reply_location(
@@ -2564,7 +2293,6 @@ class Message(base.TelegramObject):
             google_place_type: typing.Optional[base.String] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -2612,10 +2340,6 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
             reply keyboard or to force a reply from the user
@@ -2624,7 +2348,6 @@ class Message(base.TelegramObject):
             None]`
 
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -2642,10 +2365,7 @@ class Message(base.TelegramObject):
             google_place_type=google_place_type,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -2656,7 +2376,6 @@ class Message(base.TelegramObject):
             last_name: typing.Optional[base.String] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -2687,10 +2406,6 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
@@ -2710,10 +2425,7 @@ class Message(base.TelegramObject):
             last_name=last_name,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -2733,7 +2445,6 @@ class Message(base.TelegramObject):
             is_closed: typing.Optional[base.Boolean] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -2803,10 +2514,6 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
             reply keyboard or to force a reply from the user
@@ -2815,7 +2522,6 @@ class Message(base.TelegramObject):
             None]`
 
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with allow_sending_without_reply
 
         :return: On success, the sent Message is returned
         :rtype: :obj:`types.Message`
@@ -2837,10 +2543,7 @@ class Message(base.TelegramObject):
             is_closed=is_closed,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -2849,7 +2552,6 @@ class Message(base.TelegramObject):
             sticker: typing.Union[base.InputFile, base.String],
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -2874,10 +2576,6 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard,
             custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user
         :type reply_markup: :obj:`typing.Union[types.InlineKeyboardMarkup,
@@ -2895,10 +2593,7 @@ class Message(base.TelegramObject):
             sticker=sticker,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -2907,7 +2602,6 @@ class Message(base.TelegramObject):
             emoji: typing.Optional[base.String] = None,
             disable_notification: typing.Optional[base.Boolean] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup,
                 ReplyKeyboardMarkup,
@@ -2937,10 +2631,6 @@ class Message(base.TelegramObject):
             from forwarding and saving
         :type protect_content: :obj:`typing.Optional[base.Boolean]`
 
-        :param allow_sending_without_reply: Pass True, if the message should be sent
-            even if the specified replied-to message is not found
-        :type allow_sending_without_reply: :obj:`typing.Optional[base.Boolean]`
-
         :param reply_markup: Additional interface options. A JSON-serialized object
             for an inline keyboard, custom reply keyboard, instructions to remove
             reply keyboard or to force a reply from the user
@@ -2949,7 +2639,6 @@ class Message(base.TelegramObject):
             None]`
 
         :param reply_parameters: Description of the message to reply to.
-            Do not specify together with allow_sending_without_reply
 
         :return: On success, the sent Message is returned.
         :rtype: :obj:`types.Message`
@@ -2960,10 +2649,7 @@ class Message(base.TelegramObject):
             emoji=emoji,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            reply_parameters=reply_parameters or ReplyParameters(
-                message_id=self.message_id,
-                allow_sending_without_reply=allow_sending_without_reply,
-            ),
+            reply_parameters=reply_parameters or ReplyParameters(message_id=self.message_id),
             reply_markup=reply_markup,
         )
 
@@ -3010,7 +2696,7 @@ class Message(base.TelegramObject):
             text: base.String,
             parse_mode: typing.Optional[base.String] = None,
             entities: typing.Optional[typing.List[MessageEntity]] = None,
-            disable_web_page_preview: typing.Optional[base.Boolean] = None,
+            link_preview_options: typing.Optional[LinkPreviewOptions] = None,
             reply_markup: typing.Optional[InlineKeyboardMarkup] = None,
     ) -> typing.Union[Message, base.Boolean]:
         """
@@ -3029,8 +2715,7 @@ class Message(base.TelegramObject):
             which can be specified instead of parse_mode
         :type entities: :obj:`typing.Optional[typing.List[MessageEntity]]`
 
-        :param disable_web_page_preview: Disables link previews for links in this message
-        :type disable_web_page_preview: :obj:`typing.Optional[base.Boolean]`
+        :param link_preview_options: Link preview generation options for the message
 
         :param reply_markup: A JSON-serialized object for an inline keyboard.
         :type reply_markup: :obj:`typing.Optional[types.InlineKeyboardMarkup]`
@@ -3045,7 +2730,7 @@ class Message(base.TelegramObject):
             message_id=self.message_id,
             parse_mode=parse_mode,
             entities=entities,
-            disable_web_page_preview=disable_web_page_preview,
+            link_preview_options=link_preview_options,
             reply_markup=reply_markup,
         )
 
@@ -3266,7 +2951,7 @@ class Message(base.TelegramObject):
             message_thread_id: typing.Optional[base.Integer] = None,
             disable_notification: typing.Optional[bool] = None,
             protect_content: typing.Optional[base.Boolean] = None,
-            disable_web_page_preview: typing.Optional[bool] = None,
+            link_preview_options: typing.Optional[LinkPreviewOptions] = None,
             reply_parameters: typing.Optional[ReplyParameters] = None,
             reply_markup: typing.Union[
                 InlineKeyboardMarkup, ReplyKeyboardMarkup, None
@@ -3279,7 +2964,7 @@ class Message(base.TelegramObject):
         :param message_thread_id:
         :param disable_notification:
         :param protect_content:
-        :param disable_web_page_preview: for text messages only
+        :param link_preview_options:
         :param reply_parameters:
         :param reply_markup:
         :return:
@@ -3291,12 +2976,12 @@ class Message(base.TelegramObject):
             "parse_mode": ParseMode.HTML,
             "disable_notification": disable_notification,
             "protect_content": protect_content,
+            "link_preview_options": link_preview_options,
             "reply_parameters": reply_parameters,
         }
         text = self.html_text if (self.text or self.caption) else None
 
         if self.text:
-            kwargs["disable_web_page_preview"] = disable_web_page_preview
             return await self.bot.send_message(text=text, **kwargs)
         elif self.audio:
             return await self.bot.send_audio(

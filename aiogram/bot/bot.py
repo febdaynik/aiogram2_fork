@@ -11,7 +11,7 @@ from ..types import base
 from ..utils.deprecated import deprecated
 from ..utils.exceptions import ValidationError
 from ..utils.mixins import DataMixin, ContextInstanceMixin
-from ..utils.payload import generate_payload, prepare_arg, prepare_attachment, prepare_file, prepare_stickers
+from ..utils.payload import generate_payload, prepare_arg, prepare_attachment, prepare_file
 
 
 class Bot(BaseBot, DataMixin, ContextInstanceMixin):
@@ -273,7 +273,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                            text: base.String,
                            parse_mode: typing.Optional[base.String] = None,
                            entities: typing.Optional[typing.List[types.MessageEntity]] = None,
-                           disable_web_page_preview: typing.Optional[base.Boolean] = None,
+                           link_preview_options: typing.Optional[types.LinkPreviewOptions] = None,
                            message_thread_id: typing.Optional[base.Integer] = None,
                            disable_notification: typing.Optional[base.Boolean] = None,
                            protect_content: typing.Optional[base.Boolean] = None,
@@ -306,8 +306,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             which can be specified instead of parse_mode
         :type entities: :obj:`typing.Optional[typing.List[types.MessageEntity]]`
 
-        :param disable_web_page_preview: Disables link previews for links in this message
-        :type disable_web_page_preview: :obj:`typing.Optional[base.Boolean]`
+        :param link_preview_options: Link preview generation options for the message
 
         :param disable_notification: Sends the message silently. Users will receive a notification with no sound
         :type disable_notification: :obj:`typing.Optional[base.Boolean]`
@@ -332,8 +331,8 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
         payload = generate_payload(**locals())
         if self.parse_mode and entities is None:
             payload.setdefault('parse_mode', self.parse_mode)
-        if self.disable_web_page_preview:
-            payload.setdefault('disable_web_page_preview', self.disable_web_page_preview)
+        if self.link_preview_options:
+            payload.setdefault('link_preview_options', self.link_preview_options)
         if self.protect_content is not None:
             payload.setdefault('protect_content', self.protect_content)
 
@@ -1628,7 +1627,8 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
         return types.Message(**result)
 
     async def send_chat_action(self, chat_id: typing.Union[base.Integer, base.String],
-                               action: base.String, message_thread_id: typing.Optional[base.Integer] = None) -> base.Boolean:
+                               action: base.String,
+                               message_thread_id: typing.Optional[base.Integer] = None) -> base.Boolean:
         """
         Use this method when you need to tell the user that something is
         happening on the bot's side. The status is set for 5 seconds or
@@ -3160,9 +3160,8 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                                 inline_message_id: typing.Optional[base.String] = None,
                                 parse_mode: typing.Optional[base.String] = None,
                                 entities: typing.Optional[typing.List[types.MessageEntity]] = None,
-                                disable_web_page_preview: typing.Optional[base.Boolean] = None,
-                                reply_markup: typing.Union[types.InlineKeyboardMarkup,
-                                None] = None,
+                                link_preview_options: typing.Optional[types.LinkPreviewOptions] = None,
+                                reply_markup: typing.Union[types.InlineKeyboardMarkup, None] = None,
                                 ) -> types.Message or base.Boolean:
         """
         Use this method to edit text and game messages sent by the bot or via the bot (for inline bots).
@@ -3190,8 +3189,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             which can be specified instead of parse_mode
         :type entities: :obj:`typing.Optional[typing.List[types.MessageEntity]]`
 
-        :param disable_web_page_preview: Disables link previews for links in this message
-        :type disable_web_page_preview: :obj:`typing.Optional[base.Boolean]`
+        :param link_preview_options: Link preview generation options for the message
 
         :param reply_markup: A JSON-serialized object for an inline keyboard
         :type reply_markup: :obj:`typing.Optional[types.InlineKeyboardMarkup]`
@@ -3205,8 +3203,8 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
         payload = generate_payload(**locals())
         if self.parse_mode and entities is None:
             payload.setdefault('parse_mode', self.parse_mode)
-        if self.disable_web_page_preview:
-            payload.setdefault('disable_web_page_preview', self.disable_web_page_preview)
+        if self.link_preview_options:
+            payload.setdefault('link_preview_options', self.link_preview_options)
 
         result = await self.request(api.Methods.EDIT_MESSAGE_TEXT, payload)
         if isinstance(result, bool):
@@ -3872,7 +3870,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
                                   cache_time: typing.Optional[base.Integer] = None,
                                   is_personal: typing.Optional[base.Boolean] = None,
                                   next_offset: typing.Optional[base.String] = None,
-                                  button: typing.Optional[types.InlineQueryResultButton] = None,
+                                  button: typing.Optional[types.InlineQueryResultsButton] = None,
                                   switch_pm_text: typing.Optional[base.String] = None,
                                   switch_pm_parameter: typing.Optional[base.String] = None) -> base.Boolean:
         """
@@ -4117,7 +4115,8 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
 
         :param title: Product name, 1-32 characters
         :param description: Product description, 1-255 characters
-        :param payload: Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
+        :param payload: Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your
+            internal processes.
         :param provider_token: Payment provider token, obtained via BotFather
         :param currency: Three-letter ISO 4217 currency code, see more on currencies
         :param prices: Price breakdown, a JSON-serialized list of components

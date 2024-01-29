@@ -62,6 +62,7 @@ from .invoice import Invoice
 from .labeled_price import LabeledPrice
 from .location import Location
 from .login_url import LoginUrl
+from .link_preview_options import LinkPreviewOptions
 from .mask_position import MaskPosition
 from .menu_button import MenuButton, MenuButtonCommands, MenuButtonWebApp, MenuButtonDefault
 from .message import ContentType, ContentTypes, Message, ParseMode
@@ -218,6 +219,7 @@ __all__ = (
     'LabeledPrice',
     'Location',
     'LoginUrl',
+    'LinkPreviewOptions',
     'MaskPosition',
     'MenuButton',
     'MenuButtonCommands',
