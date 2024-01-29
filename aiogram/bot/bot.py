@@ -387,6 +387,56 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
         result = await self.request(api.Methods.FORWARD_MESSAGE, payload)
         return types.Message(**result)
 
+    async def forward_messages(self,
+                              chat_id: typing.Union[base.Integer, base.String],
+                              from_chat_id: typing.Union[base.Integer, base.String],
+                              message_ids: typing.List[base.Integer],
+                              message_thread_id: typing.Optional[base.Integer] = None,
+                              disable_notification: typing.Optional[base.Boolean] = None,
+                              protect_content: typing.Optional[base.Boolean] = None,
+                              ) -> typing.List[types.MessageId]:
+        """
+        Use this method to forward multiple messages of any kind.
+
+        Source: https://core.telegram.org/bots/api#forwardmessages
+
+        :param chat_id: Unique identifier for the target chat or
+            username of the target channel
+        :type chat_id: :obj:`typing.Union[base.Integer, base.String]`
+
+        :param message_thread_id: Unique identifier for the target message thread (topic) of the forum; for forum
+            supergroups only
+        :type message_thread_id: :obj:`typing.Optional[base.Integer]`
+
+        :param from_chat_id: Unique identifier for the chat where the
+            original message was sent
+        :type from_chat_id: :obj:`typing.Union[base.Integer, base.String]`
+
+        :param disable_notification: Sends the message silently. Users
+            will receive a notification with no sound
+        :type disable_notification: :obj:`typing.Optional[base.Boolean]`
+
+        :param protect_content: Protects the contents of the forwarded
+            message from forwarding and saving
+        :type protect_content: :obj:`typing.Optional[base.Boolean]`
+
+        :param message_ids: Identifiers of 1-100 messages in the chat from_chat_id to forward.
+            The identifiers must be specified in a strictly increasing order.
+        :type message_ids: :obj:`typing.List[base.Integer]`
+
+        :return: On success, an array of MessageId of the sent messages is returned.
+        :rtype: :obj:`typing.List[types.MessageId]`
+        """
+
+        message_ids = prepare_arg(message_ids)
+
+        payload = generate_payload(**locals())
+        if self.protect_content is not None:
+            payload.setdefault('protect_content', self.protect_content)
+
+        results = await self.request(api.Methods.FORWARD_MESSAGES, payload)
+        return [types.MessageId(**result) for result in results]
+
     async def copy_message(self,
                            chat_id: typing.Union[base.Integer, base.String],
                            from_chat_id: typing.Union[base.Integer, base.String],
@@ -456,7 +506,7 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
             None]`
 
         :return: On success, the sent Message is returned
-        :rtype: :obj:`types.Message`
+        :rtype: :obj:`types.MessageId`
         """
         reply_markup = prepare_arg(reply_markup)
         caption_entities = prepare_arg(caption_entities)
@@ -468,6 +518,57 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
 
         result = await self.request(api.Methods.COPY_MESSAGE, payload)
         return types.MessageId(**result)
+
+    async def copy_messages(self,
+                           chat_id: typing.Union[base.Integer, base.String],
+                           from_chat_id: typing.Union[base.Integer, base.String],
+                           message_ids: typing.List[base.Integer],
+                           message_thread_id: typing.Optional[base.Integer] = None,
+                           disable_notification: typing.Optional[base.Boolean] = None,
+                           protect_content: typing.Optional[base.Boolean] = None,
+                           remove_caption: typing.Optional[base.Boolean] = None,
+                           ) -> typing.List[types.MessageId]:
+        """
+        Use this method to copy messages of any kind.
+
+        Source: https://core.telegram.org/bots/api#copymessages
+
+        :param chat_id: Unique identifier for the target chat or username of the
+            target channel (in the format @channelusername)
+        :type chat_id: :obj:`typing.Union[base.Integer, base.String]`
+
+        :param message_thread_id: Unique identifier for the target message thread (topic) of the forum; for forum
+            supergroups only
+        :type message_thread_id: :obj:`typing.Optional[base.Integer]`
+
+        :param from_chat_id: Unique identifier for the chat where the original
+            message was sent (or channel username in the format @channelusername)
+        :type from_chat_id: :obj:`typing.Union[base.Integer, base.String]`
+
+        :param message_ids: Identifiers of 1-100 messages in the chat from_chat_id to copy.
+            The identifiers must be specified in a strictly increasing order.
+
+        :param disable_notification: Sends the message silently. Users will receive
+            a notification with no sound
+        :type disable_notification: :obj:`typing.Optional[base.Boolean]`
+
+        :param protect_content: Protects the contents of sent messages
+            from forwarding and saving
+        :type protect_content: :obj:`typing.Optional[base.Boolean]`
+
+        :param remove_caption: Pass True to copy the messages without their captions
+
+        :return: On success, an array of MessageId of the sent messages is returned.
+        :rtype: :obj:`typing.List[types.MessageId]`
+        """
+        message_ids = prepare_arg(message_ids)
+        payload = generate_payload(**locals())
+
+        if self.protect_content is not None:
+            payload.setdefault('protect_content', self.protect_content)
+
+        results = await self.request(api.Methods.COPY_MESSAGES, payload)
+        return [types.MessageId(**result) for result in results]
 
     async def send_photo(self,
                          chat_id: typing.Union[base.Integer, base.String],
@@ -3385,6 +3486,25 @@ class Bot(BaseBot, DataMixin, ContextInstanceMixin):
         payload = generate_payload(**locals())
 
         return await self.request(api.Methods.DELETE_MESSAGE, payload)
+
+    async def delete_messages(self, chat_id: typing.Union[base.Integer, base.String],
+                             message_ids: typing.List[base.Integer]) -> base.Boolean:
+        """
+        Use this method to delete multiple messages simultaneously
+
+        Source: https://core.telegram.org/bots/api#deletemessages
+
+        :param chat_id: Unique identifier for the target chat or username of the target channel
+        :type chat_id: :obj:`typing.Union[base.Integer, base.String]`
+        :param message_ids: Identifiers of 1-100 messages to delete
+        :type message_ids: :obj:`typing.List[base.Integer]`
+        :return: Returns True on success
+        :rtype: :obj:`base.Boolean`
+        """
+        message_ids = prepare_arg(message_ids)
+        payload = generate_payload(**locals())
+
+        return await self.request(api.Methods.DELETE_MESSAGES, payload)
 
     # === Stickers ===
     # https://core.telegram.org/bots/api#stickers

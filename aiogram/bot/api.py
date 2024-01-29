@@ -203,7 +203,9 @@ class Methods(Helper):
     CLOSE = Item()  # close
     SEND_MESSAGE = Item()  # sendMessage
     FORWARD_MESSAGE = Item()  # forwardMessage
+    FORWARD_MESSAGES = Item()  # forwardMessages
     COPY_MESSAGE = Item()  # copyMessage
+    COPY_MESSAGES = Item()  # copyMessages
     SEND_PHOTO = Item()  # sendPhoto
     SEND_AUDIO = Item()  # sendAudio
     SEND_DOCUMENT = Item()  # sendDocument
@@ -284,6 +286,7 @@ class Methods(Helper):
     EDIT_MESSAGE_REPLY_MARKUP = Item()  # editMessageReplyMarkup
     STOP_POLL = Item()  # stopPoll
     DELETE_MESSAGE = Item()  # deleteMessage
+    DELETE_MESSAGES = Item()  # deleteMessages
 
     # Stickers
     SEND_STICKER = Item()  # sendSticker
